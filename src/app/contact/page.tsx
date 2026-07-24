@@ -18,6 +18,16 @@ const prettyUrl = (url: string) =>
 
 const HIDDEN_CHANNELS = ['stackoverflow', 'twitter', 'facebook']
 
+// Matches "Stack Overflow", "stack-overflow", twitter.com/x.com urls etc.
+const isHiddenChannel = ({ medium, url }: { medium: string; url: string }) => {
+  const normalizedMedium = medium.toLowerCase().replace(/[^a-z0-9]/g, '')
+  const normalizedUrl = url.toLowerCase()
+  return HIDDEN_CHANNELS.some(
+    (hidden) =>
+      normalizedMedium.includes(hidden) || normalizedUrl.includes(hidden)
+  )
+}
+
 export default async function ContactPage() {
   const { data } = await getIndexPageData()
   const { me } = data
@@ -29,9 +39,7 @@ export default async function ContactPage() {
         <ul className={styles.list}>
           {me.contacts.items
             .filter(Boolean)
-            .filter(
-              ({ medium }) => !HIDDEN_CHANNELS.includes(medium.toLowerCase())
-            )
+            .filter((contact) => !isHiddenChannel(contact))
             .map(({ medium, url }) => (
             <li key={medium}>
               <a

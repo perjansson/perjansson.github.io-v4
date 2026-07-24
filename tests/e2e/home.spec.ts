@@ -75,7 +75,8 @@ test.describe('work page', () => {
     await page.goto('/work/')
     const allCount = await page.getByRole('listitem').count()
 
-    const chip = page.getByRole('button', { name: 'Smart TV' })
+    // Data-independent: press whichever tech chip renders first
+    const chip = page.locator('button[aria-pressed]').first()
     await chip.click()
     await expect(chip).toHaveAttribute('aria-pressed', 'true')
 
