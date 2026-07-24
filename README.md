@@ -5,10 +5,31 @@ aesthetic inspired by [Restaurant E.Ekblom](https://eekblom.fi/en/etusivu-englis
 a dark, candle-lit palette, elegant serif typography, and projects presented
 like courses on a menu card.
 
-Built as a static site with [Next.js](https://nextjs.org) (App Router, static
-export) and content from [Contentful](https://www.contentful.com) — the same
-content model and GraphQL queries as [v3](https://github.com/perjansson/perjansson.github.io-v3),
-only the UI is new.
+Built as a static site with [Next.js 16](https://nextjs.org) (App Router,
+static export) and content from [Contentful](https://www.contentful.com) — the
+same content model and GraphQL queries as [v3](https://github.com/perjansson/perjansson.github.io-v3),
+only the UI is new. Tested end-to-end with [Playwright](https://playwright.dev),
+built with [GitHub Actions](https://github.com/features/actions) and deployed
+on [Netlify](https://www.netlify.com).
+
+## Workflow
+
+Deliberately simple for now:
+
+- **main** is the only long-lived branch and represents production
+- Every push runs the CI workflow: install → build → Playwright e2e tests
+- On **main**, if all tests pass, the pre-built site is deployed straight to
+  Netlify production with `netlify-cli`
+- Staging environments and pull-request previews can be added later if needed
+
+Required GitHub Actions secrets:
+
+| Secret | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_CONTENTFUL_SPACE_ID` | Contentful space |
+| `NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN` | Contentful delivery token |
+| `NETLIFY_AUTH_TOKEN` | Netlify personal access token |
+| `NETLIFY_SITE_ID` | Netlify site to deploy to |
 
 ## Get started
 
@@ -41,6 +62,16 @@ npm run build
 ```
 
 Outputs a fully static site to `out/`, ready for Netlify (or any static host).
+
+### E2E tests
+
+```
+npm run build
+npm run test:e2e
+```
+
+Runs the Playwright suite (desktop + mobile Chrome) against the static build
+in `out/`, serving it on port 4173 automatically.
 
 ## Design notes
 

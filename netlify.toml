@@ -1,0 +1,7 @@
+# Deploys are driven by GitHub Actions (see .github/workflows/ci.yml), which
+# runs the tests and pushes the pre-built out/ directory with netlify-cli.
+# If you ever connect the repo to Netlify's own build pipeline instead,
+# this config makes it build the same way.
+[build]
+  command = "npm run build"
+  publish = "out"
