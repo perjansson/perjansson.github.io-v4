@@ -46,7 +46,8 @@ export interface MeType {
   lastName: string
   name: string
   title: string
-  profileImage: ImageType
+  /** No longer queried or shown — the site uses the GitHub avatar */
+  profileImage?: ImageType
   contacts: {
     items: Array<ContactType>
   }
