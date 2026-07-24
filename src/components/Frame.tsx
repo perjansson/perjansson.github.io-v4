@@ -13,7 +13,12 @@ export const Frame: React.FC<FrameProps> = ({ children, contactLine }) => (
     <TopBar />
     <main className={styles.frame}>{children}</main>
     <footer className={styles.strip}>
-      <div className={styles.copyright}>© {new Date().getFullYear()} Per Jansson</div>
+      <div className={styles.copyright}>
+        <span className={styles.copyrightSign} aria-hidden="true">
+          ©
+        </span>{' '}
+        {new Date().getFullYear()} Per Jansson
+      </div>
       <div className={styles.contactLine}>
         {contactLine ?? 'Turku, Finland'}
       </div>

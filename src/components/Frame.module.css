@@ -48,6 +48,15 @@
   white-space: nowrap;
 }
 
+/* Space Mono draws © small and raised; pull it back to the text's
+   optical center */
+.copyrightSign {
+  display: inline-block;
+  font-size: 1.35em;
+  line-height: 0;
+  transform: translateY(0.2em);
+}
+
 .contactLine {
   text-align: right;
   overflow-wrap: anywhere;
