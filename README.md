@@ -31,6 +31,7 @@ Required GitHub Actions secrets:
 | `NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN` | Contentful delivery token |
 | `NETLIFY_AUTH_TOKEN` | Netlify personal access token |
 | `NETLIFY_SITE_ID` | Netlify site to deploy to |
+| `GA_TRACKING_ID` | Google Analytics 4 measurement ID (optional — analytics are simply omitted without it) |
 
 ## Get started
 

@@ -13,6 +13,7 @@
     "@contentful/rich-text-react-renderer": "^16.2.2",
     "@contentful/rich-text-types": "^17.0.0",
     "@fontsource/space-mono": "^5.3.0",
+    "@next/third-parties": "^16.2.11",
     "next": "^16.2.11",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

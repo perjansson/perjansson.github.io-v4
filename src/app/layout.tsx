@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from 'next'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import '@fontsource/space-mono/400.css'
 import '@fontsource/space-mono/700.css'
 import './globals.css'
+
+const gaId = process.env.NEXT_PUBLIC_GA_TRACKING_ID
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.perjansson.me'),
@@ -41,6 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>{children}</body>
+      {gaId && <GoogleAnalytics gaId={gaId} />}
     </html>
   )
 }
