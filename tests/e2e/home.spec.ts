@@ -71,9 +71,12 @@ test.describe('work page', () => {
     expect(await page.getByRole('listitem').count()).toBeGreaterThan(0)
   })
 
-  test('tech chips filter the project lists', async ({ page }) => {
+  test('tech chips narrow the project lists without dead ends', async ({
+    page,
+  }) => {
     await page.goto('/work/')
     const allCount = await page.getByRole('listitem').count()
+    const allChipCount = await page.locator('button[aria-pressed]').count()
 
     // Data-independent: press whichever tech chip renders first
     const chip = page.locator('button[aria-pressed]').first()
@@ -82,6 +85,19 @@ test.describe('work page', () => {
 
     const filteredCount = await page.getByRole('listitem').count()
     expect(filteredCount).toBeLessThan(allCount)
+
+    // Remaining chips are only those that keep at least one project
+    const remainingChips = page.locator('button[aria-pressed]')
+    expect(await remainingChips.count()).toBeLessThanOrEqual(allChipCount)
+
+    // Multi-select: adding a second tech narrows further but never to zero
+    if ((await remainingChips.count()) > 1) {
+      await remainingChips.nth(1).click()
+      expect(await page.getByRole('listitem').count()).toBeGreaterThan(0)
+      expect(await page.getByRole('listitem').count()).toBeLessThanOrEqual(
+        filteredCount
+      )
+    }
 
     await page.getByRole('button', { name: /clear filter/i }).click()
     expect(await page.getByRole('listitem').count()).toBe(allCount)

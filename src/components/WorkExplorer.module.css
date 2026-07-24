@@ -63,8 +63,3 @@
 .clearChip {
   font-size: 0.62rem;
 }
-
-.empty {
-  color: var(--color-ink-dim);
-  font-style: italic;
-}
