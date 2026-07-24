@@ -100,19 +100,23 @@ const monthsBetween = (start: string, end: string | null | undefined) => {
   )
 }
 
-export const buildWorkItems = (projects: ProjectType[]): WorkItem[] => {
-  // When the `promoted` field exists in the content model, every item
-  // carries it (true/false/null) and the flags are the whole truth —
-  // even if nothing is ticked. Only when the field is absent entirely
-  // does the legacy id list apply.
+// When the `promoted` field exists in the content model, every item
+// carries it (true/false/null) and the flags are the whole truth —
+// even if nothing is ticked. Only when the field is absent entirely
+// does the legacy id list apply.
+const promotedChecker = (projects: ProjectType[]) => {
   const hasPromotedField = projects.some(
     (project) => project.promoted !== undefined
   )
 
-  const isPromoted = (project: ProjectType) =>
+  return (project: ProjectType) =>
     hasPromotedField
       ? project.promoted === true
       : PROMOTED_PROJECT_IDS.includes(project.sys.id)
+}
+
+export const buildWorkItems = (projects: ProjectType[]): WorkItem[] => {
+  const isPromoted = promotedChecker(projects)
 
   return projects.map((project) => ({
     id: project.sys.id,
@@ -125,32 +129,39 @@ export const buildWorkItems = (projects: ProjectType[]): WorkItem[] => {
   }))
 }
 
-// Weight = personal usage (total months + a bonus per project) times a
-// present-day popularity factor, so long-and-recent techs read big while
+// Weight = personal usage (months + a bonus per project, counted 1.5x
+// for featured projects) times a present-day popularity factor, so
+// long-and-recent techs proven in the showcase work read big while
 // techs of the past shrink no matter how long they were used.
 // Scaled against the heaviest tech for sizing.
+const FEATURED_USAGE_MULTIPLIER = 1.5
+
 export const buildTechStats = (projects: ProjectType[]): TechStat[] => {
-  const stats = new Map<string, { projectCount: number; months: number }>()
+  const isPromoted = promotedChecker(projects)
+  const stats = new Map<
+    string,
+    { projectCount: number; months: number; usage: number }
+  >()
 
   for (const project of projects) {
     const months = monthsBetween(project.startdate, project.enddate)
+    const multiplier = isPromoted(project) ? FEATURED_USAGE_MULTIPLIER : 1
     for (const rawTech of project.tech ?? []) {
       const tech = canonicalTech(rawTech)
-      const entry = stats.get(tech) ?? { projectCount: 0, months: 0 }
+      const entry = stats.get(tech) ?? { projectCount: 0, months: 0, usage: 0 }
       entry.projectCount += 1
       entry.months += months
+      entry.usage += (months + 6) * multiplier
       stats.set(tech, entry)
     }
   }
 
-  const scored = Array.from(stats.entries()).map(([name, entry]) => {
-    const usage = entry.months + entry.projectCount * 6
-    return {
-      name,
-      ...entry,
-      score: usage * (0.3 + 0.7 * popularityOf(name)),
-    }
-  })
+  const scored = Array.from(stats.entries()).map(([name, entry]) => ({
+    name,
+    projectCount: entry.projectCount,
+    months: entry.months,
+    score: entry.usage * (0.3 + 0.7 * popularityOf(name)),
+  }))
 
   const maxScore = Math.max(...scored.map(({ score }) => score), 1)
 
