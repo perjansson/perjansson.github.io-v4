@@ -27,7 +27,7 @@ export interface ProjectType {
   asset: ImageType
   assetPlaceholder?: string
   startdate: string
-  enddate: string
+  enddate: string | null
   city: string
   collaborators: {
     items: Array<Collaborator>

@@ -36,19 +36,54 @@ test.describe('front page', () => {
   })
 })
 
+test.describe('theme', () => {
+  test('toggles to light theme and persists', async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: /switch to light theme/i }).click()
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+
+    await page.reload()
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+  })
+})
+
 test.describe('story page', () => {
-  test('shows the portrait and bio', async ({ page }) => {
+  test('shows the GitHub portrait and bio', async ({ page }) => {
     await page.goto('/story/')
-    await expect(page.getByRole('img', { name: /portrait of/i })).toBeVisible()
+    const portrait = page.getByRole('img', { name: /portrait of/i })
+    await expect(portrait).toHaveAttribute(
+      'src',
+      /avatars\.githubusercontent\.com/
+    )
     await expect(page.getByRole('heading', { name: /about me/i })).toBeVisible()
   })
 })
 
 test.describe('work page', () => {
-  test('lists projects with periods', async ({ page }) => {
+  test('shows selected work and all work sections', async ({ page }) => {
     await page.goto('/work/')
-    const items = page.getByRole('listitem')
-    expect(await items.count()).toBeGreaterThan(0)
+    await expect(
+      page.getByRole('heading', { name: /selected work/i })
+    ).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: /all work/i })
+    ).toBeVisible()
+    expect(await page.getByRole('listitem').count()).toBeGreaterThan(0)
+  })
+
+  test('tech chips filter the project lists', async ({ page }) => {
+    await page.goto('/work/')
+    const allCount = await page.getByRole('listitem').count()
+
+    const chip = page.getByRole('button', { name: 'Smart TV' })
+    await chip.click()
+    await expect(chip).toHaveAttribute('aria-pressed', 'true')
+
+    const filteredCount = await page.getByRole('listitem').count()
+    expect(filteredCount).toBeLessThan(allCount)
+
+    await page.getByRole('button', { name: /clear filter/i }).click()
+    expect(await page.getByRole('listitem').count()).toBe(allCount)
   })
 
   test('navigates to a project page and back', async ({ page }) => {
@@ -78,12 +113,16 @@ test.describe('craft page', () => {
 })
 
 test.describe('contact page', () => {
-  test('shows contact channels', async ({ page }) => {
+  test('shows contact channels without retired networks', async ({ page }) => {
     await page.goto('/contact/')
     await expect(
       page.getByRole('heading', { name: /find me here/i })
     ).toBeVisible()
     const emailLink = page.locator('a[href^="mailto:"]')
     await expect(emailLink.first()).toBeVisible()
+
+    for (const hidden of ['twitter', 'stackoverflow', 'facebook']) {
+      await expect(page.getByText(hidden, { exact: false })).toHaveCount(0)
+    }
   })
 })

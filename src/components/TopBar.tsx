@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { ThemeToggle } from './ThemeToggle'
 import styles from './TopBar.module.css'
 
 const MENU_ITEMS = [
@@ -46,17 +47,20 @@ export const TopBar: React.FC = () => {
             />
           ))}
         </div>
-        <button
-          type="button"
-          className={styles.burger}
-          onClick={() => setIsOpen(true)}
-          aria-label="Open menu"
-          aria-expanded={isOpen}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        <div className={styles.actions}>
+          <ThemeToggle />
+          <button
+            type="button"
+            className={styles.burger}
+            onClick={() => setIsOpen(true)}
+            aria-label="Open menu"
+            aria-expanded={isOpen}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </div>
 
       <div

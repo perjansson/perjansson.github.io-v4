@@ -26,6 +26,12 @@
   background-color: var(--color-ink-dim);
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
 .burger {
   background: none;
   border: none;

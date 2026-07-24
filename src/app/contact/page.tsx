@@ -16,6 +16,8 @@ const prettyUrl = (url: string) =>
     .replace(/^https?:\/\/(www\.)?/, '')
     .replace(/\/$/, '')
 
+const HIDDEN_CHANNELS = ['stackoverflow', 'twitter', 'facebook']
+
 export default async function ContactPage() {
   const { data } = await getIndexPageData()
   const { me } = data
@@ -25,7 +27,12 @@ export default async function ContactPage() {
       <SplitPanel title="Contact">
         <h2 className={styles.heading}>Find me here</h2>
         <ul className={styles.list}>
-          {me.contacts.items.filter(Boolean).map(({ medium, url }) => (
+          {me.contacts.items
+            .filter(Boolean)
+            .filter(
+              ({ medium }) => !HIDDEN_CHANNELS.includes(medium.toLowerCase())
+            )
+            .map(({ medium, url }) => (
             <li key={medium}>
               <a
                 href={url}

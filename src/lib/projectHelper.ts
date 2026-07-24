@@ -1,7 +1,10 @@
-export const formatYear = (date?: string) =>
+export const formatYear = (date?: string | null) =>
   date ? new Date(date).getFullYear().toString() : undefined
 
-export const formatPeriod = (startdate?: string, enddate?: string) => {
+export const formatPeriod = (
+  startdate?: string | null,
+  enddate?: string | null
+) => {
   const start = formatYear(startdate)
   const end = formatYear(enddate) ?? 'present'
 
@@ -17,7 +20,10 @@ const MONTH_FORMATTER = new Intl.DateTimeFormat('en', {
   year: 'numeric',
 })
 
-export const formatPeriodDetailed = (startdate?: string, enddate?: string) => {
+export const formatPeriodDetailed = (
+  startdate?: string | null,
+  enddate?: string | null
+) => {
   if (!startdate) {
     return undefined
   }

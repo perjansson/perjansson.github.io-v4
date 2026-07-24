@@ -1,5 +1,5 @@
 :root {
-  /* E.Ekblom's cream-and-ink brutalism, inverted to a dark theme */
+  /* E.Ekblom's cream-and-ink brutalism, inverted to a dark theme (default) */
   --color-bg: #171511;
   --color-panel: #272219;
   --color-ink: #eae4d8;
@@ -10,6 +10,22 @@
     monospace;
 
   --frame-gutter: clamp(1rem, 4vw, 4rem);
+}
+
+/* Light theme: the restaurant's original cream-and-ink palette */
+:root[data-theme='light'] {
+  --color-bg: #ece7dd;
+  --color-panel: #fbf9f4;
+  --color-ink: #191919;
+  --color-ink-dim: #6d675c;
+}
+
+html {
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
 }
 
 * {

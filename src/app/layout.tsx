@@ -42,8 +42,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.dataset.theme='light'}}catch(e){}",
+          }}
+        />
+        {children}
+      </body>
       {gaId && <GoogleAnalytics gaId={gaId} />}
     </html>
   )

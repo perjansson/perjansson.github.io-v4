@@ -24,21 +24,9 @@
   letter-spacing: 0.04em;
 }
 
-.versions {
-  display: flex;
-  gap: 0.8rem;
+.copyright {
   font-weight: 700;
-}
-
-.versionLink:hover {
-  background: var(--color-ink);
-  color: var(--color-bg);
-}
-
-.versionCurrent {
-  text-decoration: underline;
-  text-underline-offset: 5px;
-  text-decoration-thickness: 3px;
+  white-space: nowrap;
 }
 
 .contactLine {

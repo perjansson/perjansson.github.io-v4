@@ -13,17 +13,7 @@ export const Frame: React.FC<FrameProps> = ({ children, contactLine }) => (
     <TopBar />
     <main className={styles.frame}>{children}</main>
     <footer className={styles.strip}>
-      <div className={styles.versions}>
-        <a
-          href="https://github.com/perjansson/perjansson.github.io-v3"
-          target="_blank"
-          rel="noreferrer"
-          className={styles.versionLink}
-        >
-          V3
-        </a>
-        <span className={styles.versionCurrent}>V4</span>
-      </div>
+      <div className={styles.copyright}>© {new Date().getFullYear()} Per Jansson</div>
       <div className={styles.contactLine}>
         {contactLine ?? 'Turku, Finland'}
       </div>

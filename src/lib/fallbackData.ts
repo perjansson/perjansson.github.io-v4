@@ -25,7 +25,9 @@ const richText = (...paragraphs: string[]): { json: Document } => ({
 
 const sampleProjects: ProjectType[] = [
   {
-    sys: { id: 'sample-project-1' },
+    // Uses the real IFE entry id so the promoted "Selected work" section
+    // is exercised in fallback builds and e2e tests too
+    sys: { id: '67ngtiw23mqyrvYrpIhtru' },
     title: 'A design system and web platform for a Nordic bank',
     titleShort: 'Nordic Banking Platform',
     client: 'Sample Client One',
@@ -42,7 +44,7 @@ const sampleProjects: ProjectType[] = [
     asset: { fileName: 'placeholder-1.svg', url: '/images/placeholder-1.svg' },
     assetPlaceholder: undefined,
     startdate: '2023-01-01',
-    enddate: '2024-06-01',
+    enddate: null,
     city: 'Helsinki',
     collaborators: {
       items: [{ name: 'Sample Collaborator', company: 'Studio North' }],
