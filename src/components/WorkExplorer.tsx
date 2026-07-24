@@ -63,7 +63,7 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
     <SplitPanel
       title="Work"
       chips={
-        <>
+        <div className={styles.filters}>
           {shownStats.map(({ name, projectCount, months, scale }) => (
             <button
               key={name}
@@ -92,7 +92,7 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
               × Clear filter
             </button>
           )}
-        </>
+        </div>
       }
     >
       {/* Keyed by the visible projects, so the fade only plays when the

@@ -75,8 +75,16 @@ test.describe('work page', () => {
 
   test('tech chips narrow the project lists without dead ends', async ({
     page,
+    isMobile,
   }) => {
     await page.goto('/work/')
+
+    if (isMobile) {
+      // The filter chips are intentionally hidden on small screens
+      await expect(page.locator('button[aria-pressed]').first()).toBeHidden()
+      return
+    }
+
     const allCount = await page.getByRole('listitem').count()
     const allChipCount = await page.locator('button[aria-pressed]').count()
 

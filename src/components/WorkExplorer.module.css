@@ -1,3 +1,15 @@
+/* On desktop the wrapper dissolves into the chips flex row; on mobile
+   the whole filter block is hidden — it eats too much screen there */
+.filters {
+  display: contents;
+}
+
+@media (max-width: 860px) {
+  .filters {
+    display: none;
+  }
+}
+
 /* Re-runs whenever the filter changes (the wrapper is re-keyed) */
 .lists {
   animation: listFade 0.3s ease;
