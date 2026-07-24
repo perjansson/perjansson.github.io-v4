@@ -1,5 +1,6 @@
 .split {
   flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
@@ -12,6 +13,10 @@
   gap: 3rem;
   padding: clamp(2rem, 5vw, 4rem);
   text-align: center;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-dim) transparent;
 }
 
 .pageTitle {
@@ -32,7 +37,11 @@
   border-left: var(--border);
   background: var(--color-panel);
   padding: clamp(1.8rem, 4vw, 3.5rem);
+  min-height: 0;
+  overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-dim) transparent;
 }
 
 @media (max-width: 860px) {
@@ -43,10 +52,12 @@
   .left {
     gap: 2rem;
     padding-block: 3rem;
+    overflow: visible;
   }
 
   .right {
     border-left: none;
     border-top: var(--border);
+    overflow: visible;
   }
 }

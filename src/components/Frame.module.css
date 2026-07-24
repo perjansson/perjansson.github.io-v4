@@ -1,8 +1,10 @@
+/* Like the restaurant's layout: a compact fixed-height box centered in
+   the viewport; long content scrolls inside the right panel, not the page */
 .page {
-  max-width: 100rem;
+  max-width: 72rem;
   margin: 0 auto;
-  padding: clamp(1.2rem, 3vw, 2.6rem) var(--frame-gutter);
-  min-height: 100svh;
+  padding: clamp(1.5rem, 6vh, 4.5rem) var(--frame-gutter);
+  height: 100svh;
   display: flex;
   flex-direction: column;
 }
@@ -10,8 +12,21 @@
 .frame {
   border: var(--border);
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+@media (max-width: 860px) {
+  .page {
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .frame {
+    overflow: visible;
+  }
 }
 
 .strip {
