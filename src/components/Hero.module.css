@@ -1,0 +1,92 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-block: 8rem 6rem;
+  overflow: hidden;
+}
+
+/* Thin inset frame, like the cover of a menu card */
+.frame {
+  position: absolute;
+  inset: clamp(0.9rem, 2.5vw, 1.75rem);
+  border: 1px solid var(--color-hairline-soft);
+  pointer-events: none;
+}
+
+.overline {
+  composes: overline from global;
+  margin-bottom: 2.4rem;
+}
+
+.statement {
+  font-size: clamp(3.2rem, 11vw, 7.5rem);
+  font-weight: 480;
+  line-height: 1.06;
+  letter-spacing: 0.01em;
+}
+
+.statement em {
+  font-style: italic;
+  font-weight: 420;
+  color: var(--color-brass-bright);
+}
+
+.intro {
+  margin-top: 2.8rem;
+  max-width: 34rem;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  line-height: 1.75;
+  color: var(--color-ink-dim);
+}
+
+.scrollCue {
+  position: absolute;
+  bottom: clamp(2rem, 5vh, 3.2rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  color: var(--color-ink-dim);
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  transition: color 0.25s var(--ease-out);
+}
+
+.scrollCue:hover {
+  color: var(--color-brass-bright);
+}
+
+.scrollCue::after {
+  content: '';
+  width: 1px;
+  height: 3rem;
+  background: linear-gradient(to bottom, var(--color-brass), transparent);
+  animation: cueDrop 2.4s var(--ease-out) infinite;
+}
+
+@keyframes cueDrop {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
