@@ -1,11 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
-  <defs>
-    <radialGradient id="g" cx="50%" cy="30%" r="90%">
-      <stop offset="0%" stop-color="#262c22"/>
-      <stop offset="60%" stop-color="#171b14"/>
-      <stop offset="100%" stop-color="#0e110c"/>
-    </radialGradient>
-  </defs>
-  <rect width="900" height="1200" fill="url(#g)"/>
-  <text x="450" y="640" text-anchor="middle" font-family="Georgia, serif" font-size="200" fill="#c2a878" fill-opacity="0.5" font-style="italic">P.J</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <rect width="800" height="1000" fill="#201d18"/>
+  <g fill="none" stroke="#eae4d8" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="400" cy="380" r="140"/>
+    <path d="M340 360 q 10 -18 32 -8 M 428 360 q 10 -18 32 -8"/>
+    <path d="M360 440 q 40 34 80 0"/>
+    <path d="M180 820 C 200 640, 300 580, 400 580 C 500 580, 600 640, 620 820"/>
+  </g>
+  <text x="400" y="940" text-anchor="middle" font-family="monospace" font-size="34" fill="#eae4d8" font-weight="bold" letter-spacing="6">PORTRAIT</text>
 </svg>

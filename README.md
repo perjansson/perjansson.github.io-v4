@@ -1,9 +1,10 @@
 # perjansson.me — v4
 
-Fourth iteration of my personal portfolio, redesigned with a restaurant-bistro
-aesthetic inspired by [Restaurant E.Ekblom](https://eekblom.fi/en/etusivu-english/):
-a dark, candle-lit palette, elegant serif typography, and projects presented
-like courses on a menu card.
+Fourth iteration of my personal portfolio, redesigned after the visual
+language of [Restaurant E.Ekblom](https://eekblom.fi/en/etusivu-english/):
+brutalist boxed panels, monospace typography, a circular scattered-letter
+wordmark, hand-drawn line-art illustrations and menu-card lists — inverted
+into a dark theme.
 
 Built as a static site with [Next.js 16](https://nextjs.org) (App Router,
 static export) and content from [Contentful](https://www.contentful.com) — the
@@ -75,12 +76,15 @@ in `out/`, serving it on port 4173 automatically.
 
 ## Design notes
 
-- **Typography**: Playfair Display (display serif) + Inter (body), self-hosted
-  via Fontsource.
-- **Palette**: deep green-black background `#12150f`, warm cream ink
-  `#ede7da`, aged brass accent `#c2a878`.
-- **Structure**: full-height statement hero → The Story (about) → The Menu
-  (selected work as a menu card with dotted leaders) → The Cellar (tech) →
-  Contact (set like an opening-hours table).
-- Project pages open with a full-bleed image and present facts like a menu's
-  fine print.
+- **Typography**: Space Mono throughout, self-hosted via Fontsource.
+- **Palette**: two tones only — warm near-black `#171511` (with a slightly
+  lighter panel tone) and cream ink `#eae4d8`, mirroring the restaurant's
+  cream-and-ink scheme in reverse.
+- **Structure**: every page sits in a thick-bordered frame with social icons
+  and a burger menu above it and a footer strip (V3/V4 switcher + contact
+  line) below it. The front page splits into the scattered-letter logo panel
+  and a 2×2 grid of illustrated navigation cards; sub-pages (Story, Work,
+  Craft, Contact, projects) use the recurring logo-left/content-right split.
+- **Details**: black-bar section headers, inverted label chips, menu-style
+  lists with right-aligned "prices" (years), and a cream slide-in navigation
+  panel.

@@ -1,25 +1,15 @@
 :root {
-  /* A candle-lit bistro palette: deep green-black, warm cream, aged brass */
-  --color-bg: #12150f;
-  --color-bg-raised: #181c14;
-  --color-bg-card: #171b12;
-  --color-ink: #ede7da;
-  --color-ink-dim: #a59d8d;
-  --color-brass: #c2a878;
-  --color-brass-bright: #d8bf8e;
-  --color-hairline: rgba(237, 231, 218, 0.16);
-  --color-hairline-soft: rgba(237, 231, 218, 0.09);
+  /* E.Ekblom's cream-and-ink brutalism, inverted to a dark theme */
+  --color-bg: #171511;
+  --color-panel: #272219;
+  --color-ink: #eae4d8;
+  --color-ink-dim: #b5aea0;
+  --border: 2px solid var(--color-ink);
 
-  --font-display: 'Playfair Display Variable', 'Playfair Display', Georgia,
-    'Times New Roman', serif;
-  --font-body: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas,
+    monospace;
 
-  --space-section: clamp(6rem, 14vh, 10rem);
-  --width-content: 68rem;
-  --width-narrow: 44rem;
-
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --frame-gutter: clamp(1rem, 4vw, 4rem);
 }
 
 * {
@@ -41,7 +31,6 @@ html {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
@@ -49,43 +38,18 @@ html {
 body {
   background-color: var(--color-bg);
   color: var(--color-ink);
-  font-family: var(--font-body);
-  font-size: 1.0625rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
   line-height: 1.7;
-  font-weight: 350;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-/* Subtle vignette, like dimmed lights over a dinner table */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(
-      120% 90% at 50% 0%,
-      rgba(216, 191, 142, 0.05) 0%,
-      transparent 55%
-    ),
-    radial-gradient(
-      130% 100% at 50% 110%,
-      rgba(0, 0, 0, 0.55) 0%,
-      transparent 60%
-    );
-  pointer-events: none;
 }
 
 h1,
 h2,
-h3,
-h4 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  line-height: 1.12;
-  letter-spacing: 0.005em;
-  text-wrap: balance;
+h3 {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 a {
@@ -99,55 +63,59 @@ img {
 }
 
 ::selection {
-  background: var(--color-brass);
+  background: var(--color-ink);
   color: var(--color-bg);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
 }
 
 /* ————— shared primitives ————— */
 
-.container {
-  width: 100%;
-  max-width: var(--width-content);
-  margin: 0 auto;
-  padding-inline: clamp(1.25rem, 5vw, 3rem);
-}
-
-.narrow {
-  max-width: var(--width-narrow);
-}
-
-.section {
-  padding-block: var(--space-section);
-}
-
-/* Small-caps label above headings, like a menu course title */
-.overline {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.32em;
+/* Black-bar section header, as on the restaurant's menu card */
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-brass);
 }
 
-.sectionHeading {
-  font-size: clamp(2.2rem, 5vw, 3.4rem);
-  margin-top: 1.1rem;
+.sectionTitle::before {
+  content: '';
+  width: 3.1rem;
+  height: 0.95rem;
+  background: var(--color-ink);
+  flex: none;
 }
 
-.sectionHeader {
-  text-align: center;
-  margin-bottom: clamp(3rem, 7vh, 4.5rem);
+/* Label chip: inverted ink block, like BOOK A TABLE / STARTERS AND SNACKS */
+.chip {
+  display: inline-block;
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border: var(--border);
+  padding: 0.3rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
-/* Short centered brass rule, a classic menu divider */
-.rule {
-  width: 3.5rem;
-  height: 1px;
-  background: var(--color-brass);
-  opacity: 0.7;
-  border: 0;
-  margin: 1.6rem auto 0;
+a.chip:hover,
+button.chip:hover {
+  background: var(--color-bg);
+  color: var(--color-ink);
 }
 
 .prose p + p {
@@ -155,43 +123,10 @@ img {
 }
 
 .prose b {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .prose a {
-  color: var(--color-brass-bright);
-  border-bottom: 1px solid rgba(216, 191, 142, 0.4);
-  transition: border-color 0.25s var(--ease-out);
-}
-
-.prose a:hover {
-  border-bottom-color: var(--color-brass-bright);
-}
-
-/* Scroll-triggered reveal */
-.reveal {
-  opacity: 0;
-  transform: translateY(26px);
-  transition:
-    opacity 0.9s var(--ease-out),
-    transform 0.9s var(--ease-out);
-}
-
-.reveal.isVisible {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-button:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--color-brass);
-  outline-offset: 4px;
-  border-radius: 2px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

@@ -1,0 +1,21 @@
+.portrait {
+  width: min(100%, 22rem);
+  border: var(--border);
+  filter: grayscale(0.25) contrast(1.05);
+  margin-bottom: 2.4rem;
+}
+
+.short {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 1.6rem;
+}
+
+.long {
+  color: var(--color-ink-dim);
+}
+
+.heading {
+  composes: sectionTitle from global;
+  margin-bottom: 2rem;
+}

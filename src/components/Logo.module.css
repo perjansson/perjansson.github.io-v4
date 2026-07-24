@@ -1,0 +1,6 @@
+.logo text {
+  font-family: var(--font-mono);
+  font-size: 46px;
+  font-weight: 700;
+  fill: var(--color-ink);
+}

@@ -1,0 +1,52 @@
+.split {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  padding: clamp(2rem, 5vw, 4rem);
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
+  max-width: 28rem;
+}
+
+.right {
+  border-left: var(--border);
+  background: var(--color-panel);
+  padding: clamp(1.8rem, 4vw, 3.5rem);
+  overflow-x: hidden;
+}
+
+@media (max-width: 860px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .left {
+    gap: 2rem;
+    padding-block: 3rem;
+  }
+
+  .right {
+    border-left: none;
+    border-top: var(--border);
+  }
+}

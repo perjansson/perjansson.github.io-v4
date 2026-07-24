@@ -1,16 +1,16 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-import { getAllProjects, getProjectDetails } from '../../../lib/api'
+import { getAllProjects, getIndexPageData, getProjectDetails } from '../../../lib/api'
+import { buildContactLine } from '../../../lib/contactLine'
 import {
   contentfulImageSrcSet,
   contentfulImageUrl,
 } from '../../../lib/contentfulImage'
 import { formatPeriodDetailed } from '../../../lib/projectHelper'
-import { Header } from '../../../components/Header'
-import { Footer } from '../../../components/Footer'
+import { Frame } from '../../../components/Frame'
+import { SplitPanel } from '../../../components/SplitPanel'
 import { RichText } from '../../../components/RichText'
-import { Reveal } from '../../../components/Reveal'
 import styles from './page.module.css'
 
 interface ProjectPageProps {
@@ -38,7 +38,10 @@ export async function generateMetadata({
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { id } = await params
-  const { data } = await getProjectDetails(id)
+  const [{ data }, indexData] = await Promise.all([
+    getProjectDetails(id),
+    getIndexPageData(),
+  ])
   const { project } = data
 
   const facts = [
@@ -54,108 +57,80 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const collaborators = project.collaborators?.items ?? []
 
   return (
-    <>
-      <Header backLink />
-      <main>
-        <section className={styles.hero}>
-          <img
-            className={styles.heroImage}
-            src={contentfulImageUrl(project.asset.url, { width: 1800 })}
-            srcSet={contentfulImageSrcSet(
-              project.asset.url,
-              [800, 1200, 1800, 2400]
-            )}
-            sizes="100vw"
-            alt=""
-          />
-          <div className={styles.heroShade} />
-          <div className={`container ${styles.heroContent}`}>
-            <p className="overline">{project.client}</p>
-            <h1 className={styles.title}>{project.title}</h1>
-          </div>
+    <Frame contactLine={buildContactLine(indexData.data.me)}>
+      <SplitPanel
+        title={project.titleShort}
+        chips={
+          <Link href="/work/" className="chip">
+            ← All work
+          </Link>
+        }
+      >
+        <img
+          className={styles.image}
+          src={contentfulImageUrl(project.asset.url, { width: 1400 })}
+          srcSet={contentfulImageSrcSet(project.asset.url, [700, 1400, 2000])}
+          sizes="(max-width: 860px) 100vw, 50vw"
+          alt=""
+        />
+
+        <ul className={styles.facts}>
+          {facts.map(({ label, value }) => (
+            <li key={label} className={styles.factRow}>
+              <span className={styles.factLabel}>{label}</span>
+              <span className={styles.factValue}>{value}</span>
+            </li>
+          ))}
+        </ul>
+
+        <section className={styles.section}>
+          <h2 className={styles.heading}>The project</h2>
+          <RichText richText={project.description} className={styles.prose} />
         </section>
 
-        <div className="container">
-          <Reveal>
-            <section className={styles.section}>
-              <ul className={styles.facts}>
-                {facts.map(({ label, value }) => (
-                  <li key={label} className={styles.fact}>
-                    <p className={styles.factLabel}>{label}</p>
-                    <p className={styles.factValue}>{value}</p>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </Reveal>
+        <section className={styles.section}>
+          <h2 className={styles.heading}>My part in it</h2>
+          <RichText richText={project.me} className={styles.prose} />
+        </section>
 
-          <Reveal>
-            <section className={styles.section}>
-              <h2 className={styles.subheading}>The project</h2>
-              <RichText richText={project.description} className={styles.prose} />
-            </section>
-          </Reveal>
+        {project.tags && project.tags.length > 0 && (
+          <section className={styles.section}>
+            <h2 className={styles.heading}>On the plate</h2>
+            <div className={styles.tags}>
+              {project.tags.map((tag) => (
+                <span key={tag} className="chip">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
 
-          <Reveal>
-            <section className={styles.section}>
-              <h2 className={styles.subheading}>My part in it</h2>
-              <RichText richText={project.me} className={styles.prose} />
-            </section>
-          </Reveal>
-
-          {project.tags && project.tags.length > 0 && (
-            <Reveal>
-              <section className={styles.section}>
-                <h2 className={styles.subheading}>On the plate</h2>
-                <p className={styles.tags}>
-                  {project.tags.map((tag, index) => (
-                    <span key={tag}>
-                      {index > 0 && (
-                        <span className={styles.separator} aria-hidden="true">
-                          ·
-                        </span>
-                      )}
-                      {tag}
-                    </span>
-                  ))}
-                </p>
-              </section>
-            </Reveal>
-          )}
-
-          {collaborators.length > 0 && (
-            <Reveal>
-              <section className={styles.section}>
-                <h2 className={styles.subheading}>Around the table</h2>
-                <ul className={styles.collaborators}>
-                  {collaborators.map(({ name, company, linkedin }) => (
-                    <li key={name + company} className={styles.collaborator}>
-                      <span className={styles.collaboratorName}>
-                        {linkedin ? (
-                          <a href={linkedin} target="_blank" rel="noreferrer">
-                            {name}
-                          </a>
-                        ) : (
-                          name
-                        )}
-                      </span>
-                      <span className={styles.leader} aria-hidden="true" />
-                      <span className={styles.company}>{company}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            </Reveal>
-          )}
-
-          <div className={styles.backRow}>
-            <Link href="/#work" className={styles.backLink}>
-              Back to all work
-            </Link>
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </>
+        {collaborators.length > 0 && (
+          <section className={styles.section}>
+            <h2 className={styles.heading}>Around the table</h2>
+            <ul className={styles.collaborators}>
+              {collaborators.map(({ name, company, linkedin }) => (
+                <li key={name + company} className={styles.collabRow}>
+                  {linkedin ? (
+                    <a
+                      href={linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.collabName}
+                    >
+                      {name}
+                    </a>
+                  ) : (
+                    <span className={styles.collabName}>{name}</span>
+                  )}
+                  <span className={styles.collabCompany}>{company}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </SplitPanel>
+    </Frame>
   )
 }

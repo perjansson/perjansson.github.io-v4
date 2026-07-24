@@ -1,0 +1,114 @@
+.home {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2rem;
+  padding: clamp(2rem, 5vw, 4rem);
+  text-align: center;
+}
+
+.tagline {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.75;
+}
+
+.byline {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.grid {
+  border-left: var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.illustration {
+  flex: 1;
+  background: var(--color-panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.2rem, 3vw, 2.5rem);
+  min-height: 10rem;
+  transition: background-color 0.15s ease;
+}
+
+.illustration svg {
+  width: min(60%, 11rem);
+  color: var(--color-ink);
+  transition: transform 0.2s ease;
+}
+
+.label {
+  border-top: var(--border);
+  padding: 0.9rem 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Interior 2x2 borders without doubling up against the frame */
+.grid > .card:nth-child(2n) {
+  border-left: var(--border);
+}
+
+.grid > .card:nth-child(n + 3) {
+  border-top: var(--border);
+}
+
+.card:hover .illustration {
+  background: var(--color-bg);
+}
+
+.card:hover .illustration svg {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+.card:hover .label {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+
+@media (max-width: 860px) {
+  .home {
+    grid-template-columns: 1fr;
+  }
+
+  .intro {
+    padding-block: 3rem;
+  }
+
+  .grid {
+    border-left: none;
+    border-top: var(--border);
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+
+  .grid > .card:nth-child(2n) {
+    border-left: none;
+  }
+
+  .grid > .card:nth-child(n + 2) {
+    border-top: var(--border);
+  }
+}

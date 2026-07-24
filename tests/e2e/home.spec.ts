@@ -1,68 +1,89 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('home page', () => {
+test.describe('front page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
   })
 
-  test('has title and hero statement', async ({ page }) => {
+  test('has title, logo and tagline', async ({ page }) => {
     await expect(page).toHaveTitle(/Per Jansson - Fullstack Web Developer/)
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(
-      'Curious.'
-    )
+    await expect(page.getByRole('img', { name: 'Jansson' })).toBeVisible()
+    await expect(page.getByText('Curious.')).toBeVisible()
   })
 
-  test('shows the story section with portrait', async ({ page }) => {
-    const story = page.locator('#story')
-    await story.scrollIntoViewIfNeeded()
-    await expect(story.getByRole('heading', { level: 2 })).toBeVisible()
-    await expect(story.getByRole('img')).toBeVisible()
+  test('shows four navigation cards', async ({ page }) => {
+    const nav = page.getByRole('navigation', { name: 'Main' })
+    await expect(nav.getByRole('link')).toHaveCount(4)
+    await expect(nav.getByText('The Story')).toBeVisible()
+    await expect(nav.getByText('Work', { exact: true })).toBeVisible()
+    await expect(nav.getByText('Craft')).toBeVisible()
+    await expect(nav.getByText('Contact')).toBeVisible()
   })
 
-  test('lists projects as a menu', async ({ page }) => {
-    const work = page.locator('#work')
-    await work.scrollIntoViewIfNeeded()
-    const items = work.getByRole('listitem')
-    await expect(items.first()).toBeVisible()
-    expect(await items.count()).toBeGreaterThan(0)
+  test('work card navigates to the work page', async ({ page }) => {
+    await page
+      .getByRole('navigation', { name: 'Main' })
+      .getByRole('link', { name: /work/i })
+      .click()
+    await expect(page).toHaveURL(/\/work\/$/)
   })
 
-  test('shows contact channels', async ({ page }) => {
-    const contact = page.locator('#contact')
-    await contact.scrollIntoViewIfNeeded()
-    await expect(
-      contact.getByRole('link', { name: /say hello/i })
-    ).toBeVisible()
+  test('burger menu opens and navigates', async ({ page }) => {
+    await page.getByRole('button', { name: 'Open menu' }).click()
+    await expect(page.getByRole('button', { name: 'Close menu' })).toBeVisible()
+    await page.getByRole('link', { name: 'Story', exact: true }).click()
+    await expect(page).toHaveURL(/\/story\/$/)
   })
 })
 
-test.describe('project page', () => {
-  test('navigating from the menu opens the project story', async ({ page }) => {
-    await page.goto('/')
-    const work = page.locator('#work')
-    await work.scrollIntoViewIfNeeded()
+test.describe('story page', () => {
+  test('shows the portrait and bio', async ({ page }) => {
+    await page.goto('/story/')
+    await expect(page.getByRole('img', { name: /portrait of/i })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /about me/i })).toBeVisible()
+  })
+})
 
-    const firstProject = work.getByRole('listitem').first().getByRole('link')
-    const projectName = await firstProject
-      .getByRole('heading', { level: 3 })
-      .innerText()
-    await firstProject.click()
+test.describe('work page', () => {
+  test('lists projects with periods', async ({ page }) => {
+    await page.goto('/work/')
+    const items = page.getByRole('listitem')
+    expect(await items.count()).toBeGreaterThan(0)
+  })
 
+  test('navigates to a project page and back', async ({ page }) => {
+    await page.goto('/work/')
+    await page.getByRole('listitem').first().getByRole('link').click()
     await expect(page).toHaveURL(/\/projects\//)
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
-    await expect(page).toHaveTitle(new RegExp(projectName))
-
     await expect(
       page.getByRole('heading', { name: /the project/i })
     ).toBeVisible()
     await expect(
       page.getByRole('heading', { name: /my part in it/i })
     ).toBeVisible()
-  })
 
-  test('back link returns to the work menu', async ({ page }) => {
-    await page.goto('/projects/sample-project-1/')
-    await page.getByRole('link', { name: /back to all work/i }).click()
-    await expect(page).toHaveURL(/\/#work$/)
+    await page.getByRole('link', { name: /all work/i }).click()
+    await expect(page).toHaveURL(/\/work\/$/)
+  })
+})
+
+test.describe('craft page', () => {
+  test('lists tools of the trade', async ({ page }) => {
+    await page.goto('/craft/')
+    await expect(
+      page.getByRole('heading', { name: /tools of the trade/i })
+    ).toBeVisible()
+    expect(await page.getByRole('listitem').count()).toBeGreaterThan(0)
+  })
+})
+
+test.describe('contact page', () => {
+  test('shows contact channels', async ({ page }) => {
+    await page.goto('/contact/')
+    await expect(
+      page.getByRole('heading', { name: /find me here/i })
+    ).toBeVisible()
+    const emailLink = page.locator('a[href^="mailto:"]')
+    await expect(emailLink.first()).toBeVisible()
   })
 })

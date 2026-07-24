@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
-import '@fontsource-variable/playfair-display'
-import '@fontsource-variable/inter'
+import '@fontsource/space-mono/400.css'
+import '@fontsource/space-mono/700.css'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#12150f',
+  themeColor: '#171511',
 }
 
 export default function RootLayout({

@@ -1,0 +1,26 @@
+.heading {
+  composes: sectionTitle from global;
+  margin-bottom: 2.2rem;
+}
+
+/* Wine-list style: bold name, muted provenance beneath, right-aligned */
+.list {
+  list-style: none;
+  text-align: right;
+  max-width: 26rem;
+  margin-left: auto;
+}
+
+.item + .item {
+  margin-top: 1.6rem;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 0.98rem;
+}
+
+.clients {
+  color: var(--color-ink-dim);
+  font-size: 0.85rem;
+}
