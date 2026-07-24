@@ -1,8 +1,10 @@
 import { ProjectType } from '../types'
 import { formatPeriod } from './projectHelper'
 
-// Contentful entry ids of the promoted projects shown under "Selected work".
-// Matched by id so content edits don't silently change the selection.
+// Legacy fallback: entry ids of the promoted projects shown under
+// "Selected work" while the content model has no `promoted` boolean.
+// Once that field exists in Contentful it takes over completely and
+// this list (plus the fallback branch below) can be deleted.
 export const PROMOTED_PROJECT_IDS = [
   '67ngtiw23mqyrvYrpIhtru', // Inflight entertainment (IFE) — Panasonic / Cathay Pacific
   '6dS3vBt0QKN9KNwsPUlIpl', // Mobile app — Sony Music
@@ -41,16 +43,30 @@ const monthsBetween = (start: string, end: string | null | undefined) => {
   )
 }
 
-export const buildWorkItems = (projects: ProjectType[]): WorkItem[] =>
-  projects.map((project) => ({
+export const buildWorkItems = (projects: ProjectType[]): WorkItem[] => {
+  // When the `promoted` field exists in the content model, every item
+  // carries it (true/false/null) and the flags are the whole truth —
+  // even if nothing is ticked. Only when the field is absent entirely
+  // does the legacy id list apply.
+  const hasPromotedField = projects.some(
+    (project) => project.promoted !== undefined
+  )
+
+  const isPromoted = (project: ProjectType) =>
+    hasPromotedField
+      ? project.promoted === true
+      : PROMOTED_PROJECT_IDS.includes(project.sys.id)
+
+  return projects.map((project) => ({
     id: project.sys.id,
     titleShort: project.titleShort,
     client: project.client,
     role: project.role,
     tech: project.tech ?? [],
     period: formatPeriod(project.startdate, project.enddate),
-    promoted: PROMOTED_PROJECT_IDS.includes(project.sys.id),
+    promoted: isPromoted(project),
   }))
+}
 
 // Weight = total months of use + a bonus per project, so both duration
 // and breadth count. Scaled against the heaviest tech for sizing.

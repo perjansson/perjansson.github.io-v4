@@ -1,4 +1,7 @@
-export const getIndexPageDataQuery = `{
+// `promoted` is an optional Boolean field on the project content type.
+// It may not exist in the content model yet, so the query can be built
+// without it and the caller falls back accordingly.
+export const getIndexPageDataQuery = (includePromoted: boolean) => `{
     me(id: "6DJvlbWzPKLgZvCzVDRzos") {
         firstName
         lastName
@@ -29,7 +32,7 @@ export const getIndexPageDataQuery = `{
             role
             tech
             startdate
-            enddate
+            enddate${includePromoted ? '\n            promoted' : ''}
             asset {
                 url
             }

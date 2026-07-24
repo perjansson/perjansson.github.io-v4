@@ -48,6 +48,14 @@ If the variables are not set (e.g. local development without secrets), the
 site builds with clearly-labeled sample fallback data so the design can always
 be previewed.
 
+### Promoted projects
+
+The work page shows promoted projects under "Selected work". Add a **Boolean
+field with id `promoted`** to the project content type in Contentful and tick
+it on the projects to highlight — the site picks it up on the next build.
+Until that field exists, a curated fallback list in `src/lib/workData.ts`
+decides the selection.
+
 ### Local dev
 
 ```
