@@ -95,7 +95,9 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
         </>
       }
     >
-      <div key={activeTechs.join('|')} className={styles.lists}>
+      {/* Keyed by the visible projects, so the fade only plays when the
+          list actually changes — not on every chip press */}
+      <div key={visible.map((item) => item.id).join('|')} className={styles.lists}>
         {selected.length > 0 && (
           <section className={styles.section}>
             <h2 className={styles.heading}>Selected work</h2>

@@ -67,9 +67,14 @@ button.techChip {
   padding: 0.28em 0.75em;
 }
 
-button.techChip:hover {
-  background: var(--color-ink);
-  color: var(--color-bg);
+/* Hover inversion only where a real pointer hovers — on touch the
+   :hover state sticks after a tap and made toggled-off chips look
+   selected */
+@media (hover: hover) {
+  button.techChip:hover {
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
 }
 
 button.techChipActive,

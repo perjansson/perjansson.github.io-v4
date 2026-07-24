@@ -128,10 +128,12 @@ a:focus-visible {
     color 0.15s ease;
 }
 
-a.chip:hover,
-button.chip:hover {
-  background: var(--color-bg);
-  color: var(--color-ink);
+@media (hover: hover) {
+  a.chip:hover,
+  button.chip:hover {
+    background: var(--color-bg);
+    color: var(--color-ink);
+  }
 }
 
 .prose p + p {
