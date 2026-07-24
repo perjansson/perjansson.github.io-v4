@@ -1,10 +1,12 @@
 import styles from './Logo.module.css'
 
-const LETTERS = 'PERJANSSON'.split('')
+// The trailing space mirrors the gap between the words, so the circle
+// reads PER · JANSSON with room on both sides
+const LETTERS = 'PER JANSSON '.split('')
 
 // Each letter gets its own arbitrary tilt, echoing the restaurant's
 // hand-scattered circular wordmark
-const ROTATIONS = [-22, 16, -10, 26, -18, 12, -28, 20, -14, 24]
+const ROTATIONS = [-22, 16, -10, 0, 26, -18, 12, -28, 20, -14, 24, 0]
 
 interface LogoProps {
   size?: number
@@ -20,6 +22,9 @@ export const Logo: React.FC<LogoProps> = ({ size = 240 }) => (
     aria-label="Per Jansson"
   >
     {LETTERS.map((letter, i) => {
+      if (letter === ' ') {
+        return null
+      }
       const angle = (i * 360) / LETTERS.length - 90
       const x = 120 + 80 * Math.cos((angle * Math.PI) / 180)
       const y = 120 + 80 * Math.sin((angle * Math.PI) / 180)
