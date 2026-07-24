@@ -3,8 +3,9 @@
 Fourth iteration of my personal portfolio, redesigned after the visual
 language of [Restaurant E.Ekblom](https://eekblom.fi/en/etusivu-english/):
 brutalist boxed panels, monospace typography, a circular scattered-letter
-wordmark, hand-drawn line-art illustrations and menu-card lists — inverted
-into a dark theme.
+wordmark, hand-drawn line-art illustrations and menu-card lists — in the
+restaurant's cream-and-ink palette, with an inverted dark theme a toggle
+away.
 
 Built as a static site with [Next.js 16](https://nextjs.org) (App Router,
 static export) and content from [Contentful](https://www.contentful.com) — the
@@ -86,9 +87,9 @@ in `out/`, serving it on port 4173 automatically.
 ## Design notes
 
 - **Typography**: Space Mono throughout, self-hosted via Fontsource.
-- **Palette**: two tones only — warm near-black `#171511` (with a slightly
-  lighter panel tone) and cream ink `#eae4d8`, mirroring the restaurant's
-  cream-and-ink scheme in reverse.
+- **Palette**: two tones only — cream `#ece7dd` with near-black ink
+  `#191919` by default (the restaurant's own scheme), inverted for the
+  dark theme.
 - **Structure**: every page sits in a thick-bordered frame with social icons
   and a burger menu above it and a footer strip (V3/V4 switcher + contact
   line) below it. The front page splits into the scattered-letter logo panel

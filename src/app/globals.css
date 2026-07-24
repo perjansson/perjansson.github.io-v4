@@ -1,9 +1,9 @@
 :root {
-  /* E.Ekblom's cream-and-ink brutalism, inverted to a dark theme (default) */
-  --color-bg: #171511;
-  --color-panel: #272219;
-  --color-ink: #eae4d8;
-  --color-ink-dim: #b5aea0;
+  /* E.Ekblom's cream-and-ink brutalism (default light theme) */
+  --color-bg: #ece7dd;
+  --color-panel: #fbf9f4;
+  --color-ink: #191919;
+  --color-ink-dim: #6d675c;
   --border: 2px solid var(--color-ink);
 
   --font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas,
@@ -12,20 +12,20 @@
   --frame-gutter: clamp(1rem, 4vw, 4rem);
 }
 
-/* Light theme: the restaurant's original cream-and-ink palette */
-:root[data-theme='light'] {
-  --color-bg: #ece7dd;
-  --color-panel: #fbf9f4;
-  --color-ink: #191919;
-  --color-ink-dim: #6d675c;
+/* Dark theme: the same palette inverted */
+:root[data-theme='dark'] {
+  --color-bg: #171511;
+  --color-panel: #272219;
+  --color-ink: #eae4d8;
+  --color-ink-dim: #b5aea0;
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
-:root[data-theme='light'] {
-  color-scheme: light;
+:root[data-theme='dark'] {
+  color-scheme: dark;
 }
 
 * {

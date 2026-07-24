@@ -37,13 +37,15 @@ test.describe('front page', () => {
 })
 
 test.describe('theme', () => {
-  test('toggles to light theme and persists', async ({ page }) => {
+  test('light by default, toggles to dark and persists', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: /switch to light theme/i }).click()
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+    await expect(page.locator('html')).not.toHaveAttribute('data-theme', 'dark')
+
+    await page.getByRole('button', { name: /switch to dark theme/i }).click()
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
 
     await page.reload()
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
   })
 })
 

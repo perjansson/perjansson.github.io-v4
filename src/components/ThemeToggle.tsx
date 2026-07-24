@@ -4,20 +4,20 @@ import { useEffect, useState } from 'react'
 
 import styles from './ThemeToggle.module.css'
 
-type Theme = 'dark' | 'light'
+type Theme = 'light' | 'dark'
 
 export const ThemeToggle: React.FC = () => {
-  const [theme, setTheme] = useState<Theme>('dark')
+  const [theme, setTheme] = useState<Theme>('light')
 
   useEffect(() => {
     const current = document.documentElement.dataset.theme
-    if (current === 'light') {
-      setTheme('light')
+    if (current === 'dark') {
+      setTheme('dark')
     }
   }, [])
 
   const toggle = () => {
-    const next: Theme = theme === 'dark' ? 'light' : 'dark'
+    const next: Theme = theme === 'light' ? 'dark' : 'light'
     setTheme(next)
     document.documentElement.dataset.theme = next
     try {
@@ -32,9 +32,9 @@ export const ThemeToggle: React.FC = () => {
       type="button"
       className={styles.toggle}
       onClick={toggle}
-      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
     >
-      {theme === 'dark' ? 'Light' : 'Dark'}
+      {theme === 'light' ? 'Dark' : 'Light'}
     </button>
   )
 }
