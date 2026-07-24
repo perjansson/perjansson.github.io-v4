@@ -1,3 +1,13 @@
+.logo {
+  animation: spin 75s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .logo text {
   font-family: var(--font-mono);
   font-size: 46px;
