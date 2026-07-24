@@ -1,20 +1,6 @@
 import { ProjectType } from '../types'
 import { formatPeriod } from './projectHelper'
 
-// Legacy fallback: entry ids of the promoted projects shown under
-// "Selected work" while the content model has no `promoted` boolean.
-// Once that field exists in Contentful it takes over completely and
-// this list (plus the fallback branch below) can be deleted.
-export const PROMOTED_PROJECT_IDS = [
-  '67ngtiw23mqyrvYrpIhtru', // Inflight entertainment (IFE) — Panasonic / Cathay Pacific
-  '6dS3vBt0QKN9KNwsPUlIpl', // Mobile app — Sony Music
-  '46wqaGkNNYoA4LVHHWktzC', // Smart TV app — HBO / Warner Media
-  '26Wuh23vh1tlC8VucfSpfx', // Wi-Fi Connectivity Platform — IAG
-  'uqQee6xa8k8Ww6gSbCRV4', // Wi-Fi Connectivity Platform — Panasonic Avionics
-  'EBiVwzTdpUSKKP7vGCb6U', // Insourcing Matchmaking Tool — EY
-  '28O7Tth24u89EpqdnaCtS9', // Nordic portfolio system — Nordea
-]
-
 export interface WorkItem {
   id: string
   titleShort: string
@@ -100,25 +86,12 @@ const monthsBetween = (start: string, end: string | null | undefined) => {
   )
 }
 
-// When the `promoted` field exists in the content model, every item
-// carries it (true/false/null) and the flags are the whole truth —
-// even if nothing is ticked. Only when the field is absent entirely
-// does the legacy id list apply.
-const promotedChecker = (projects: ProjectType[]) => {
-  const hasPromotedField = projects.some(
-    (project) => project.promoted !== undefined
-  )
+// The `promoted` Boolean on the project content type drives the
+// "Selected work" section
+const isPromoted = (project: ProjectType) => project.promoted === true
 
-  return (project: ProjectType) =>
-    hasPromotedField
-      ? project.promoted === true
-      : PROMOTED_PROJECT_IDS.includes(project.sys.id)
-}
-
-export const buildWorkItems = (projects: ProjectType[]): WorkItem[] => {
-  const isPromoted = promotedChecker(projects)
-
-  return projects.map((project) => ({
+export const buildWorkItems = (projects: ProjectType[]): WorkItem[] =>
+  projects.map((project) => ({
     id: project.sys.id,
     titleShort: project.titleShort,
     client: project.client,
@@ -127,7 +100,6 @@ export const buildWorkItems = (projects: ProjectType[]): WorkItem[] => {
     period: formatPeriod(project.startdate, project.enddate),
     promoted: isPromoted(project),
   }))
-}
 
 // Weight = personal usage (months + a bonus per project, counted 1.5x
 // for featured projects) times a present-day popularity factor, so
@@ -137,7 +109,6 @@ export const buildWorkItems = (projects: ProjectType[]): WorkItem[] => {
 const FEATURED_USAGE_MULTIPLIER = 1.5
 
 export const buildTechStats = (projects: ProjectType[]): TechStat[] => {
-  const isPromoted = promotedChecker(projects)
   const stats = new Map<
     string,
     { projectCount: number; months: number; usage: number }

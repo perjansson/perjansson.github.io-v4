@@ -51,13 +51,7 @@ export const getIndexPageData = async (): Promise<IndexPageData> => {
     return fallbackIndexPageData
   }
 
-  try {
-    return await fetchGraphQL<IndexPageData>(getIndexPageDataQuery(true))
-  } catch {
-    // The optional `promoted` field isn't in the content model (yet) —
-    // query without it and let the UI fall back to its curated list.
-    return fetchGraphQL<IndexPageData>(getIndexPageDataQuery(false))
-  }
+  return fetchGraphQL<IndexPageData>(getIndexPageDataQuery)
 }
 
 export const getAllProjects = async (): Promise<AllProjectsData> => {
