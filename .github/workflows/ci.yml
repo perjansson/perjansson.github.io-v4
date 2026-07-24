@@ -22,6 +22,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: List projects (temporary)
+        if: github.ref != 'refs/heads/main'
+        run: node scripts/dumpProjects.mjs
+        env:
+          NEXT_PUBLIC_CONTENTFUL_SPACE_ID: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
+          NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
+
       - name: Build
         run: npm run build
         env:
