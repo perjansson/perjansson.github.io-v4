@@ -8,7 +8,7 @@ import { RichText } from '../../components/RichText'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: '✨ Per Jansson - Fullstack Web Developer - The Story ✨',
+  title: 'Per Jansson - Curious Software Craftsman - The Story',
 }
 
 export default async function StoryPage() {

@@ -31,7 +31,7 @@ export async function generateMetadata({
   const { project } = data
 
   return {
-    title: `✨ Per Jansson - Fullstack Web Developer - ${project.titleShort} ✨`,
+    title: `Per Jansson - Curious Software Craftsman - ${project.titleShort}`,
     description: `I'm Per, a curious software developer. This is the story of me helping out building ${project.title}`,
   }
 }

@@ -36,7 +36,7 @@ export default async function Home() {
             Full&nbsp;stack.
           </p>
           <p className={styles.byline}>
-            {me.name} — {me.title}
+            {me.name} — Curious Software Craftsman
           </p>
         </section>
         <nav className={styles.grid} aria-label="Main">

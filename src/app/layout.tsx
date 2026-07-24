@@ -8,18 +8,18 @@ const gaId = process.env.NEXT_PUBLIC_GA_TRACKING_ID
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.perjansson.me'),
-  title: '✨ Per Jansson - Fullstack Web Developer ✨',
+  title: 'Per Jansson - Curious Software Craftsman',
   description:
     "I'm Per, a curious software developer with a passion to build great applications and websites - and help others do the same.",
   openGraph: {
-    title: '✨ Per Jansson - Fullstack Web Developer ✨',
+    title: 'Per Jansson - Curious Software Craftsman',
     description:
       "I'm Per, a curious software developer with a passion to build great applications and websites - and help others do the same.",
     images: ['/images/social-media.jpg'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '✨ Per Jansson - Fullstack Web Developer ✨',
+    title: 'Per Jansson - Curious Software Craftsman',
     description:
       "I'm Per, a curious software developer with a passion to build great applications and websites - and help others do the same.",
   },

@@ -7,7 +7,7 @@ import { SplitPanel } from '../../components/SplitPanel'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: '✨ Per Jansson - Fullstack Web Developer - Contact ✨',
+  title: 'Per Jansson - Curious Software Craftsman - Contact',
 }
 
 const prettyUrl = (url: string) =>
@@ -57,7 +57,7 @@ export default async function ContactPage() {
         <p className={styles.address}>
           <span>{me.name}</span>
           <br />
-          <span>{me.title}</span>
+          <span>Curious Software Craftsman</span>
           <br />
           <span>Turku, Finland</span>
         </p>

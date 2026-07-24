@@ -7,7 +7,7 @@ import { Frame } from '../../components/Frame'
 import { WorkExplorer } from '../../components/WorkExplorer'
 
 export const metadata: Metadata = {
-  title: '✨ Per Jansson - Fullstack Web Developer - Work ✨',
+  title: 'Per Jansson - Curious Software Craftsman - Work',
 }
 
 export default async function WorkPage() {

@@ -7,7 +7,7 @@ import { SplitPanel } from '../../components/SplitPanel'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: '✨ Per Jansson - Fullstack Web Developer - Craft ✨',
+  title: 'Per Jansson - Curious Software Craftsman - Craft',
 }
 
 export default async function CraftPage() {
