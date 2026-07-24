@@ -43,9 +43,18 @@ jobs:
           path: playwright-report/
           retention-days: 14
 
+      # Netlify's upload API occasionally fails a deploy with a transient
+      # "Initial file records don't match the uploaded ones" — retry a
+      # couple of times before calling it a real failure
       - name: Deploy to Netlify (production)
         if: github.ref == 'refs/heads/main'
-        run: npx netlify-cli@latest deploy --no-build --dir=out --prod --message "Deploy from GitHub Actions ${{ github.sha }}"
+        run: |
+          for attempt in 1 2 3; do
+            npx netlify-cli@latest deploy --no-build --dir=out --prod --message "Deploy from GitHub Actions ${{ github.sha }}" && exit 0
+            echo "Deploy attempt ${attempt} failed, retrying in $((attempt * 15))s..."
+            sleep $((attempt * 15))
+          done
+          exit 1
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
