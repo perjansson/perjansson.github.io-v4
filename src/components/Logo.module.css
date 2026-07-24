@@ -1,5 +1,38 @@
 .logo {
+  position: relative;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-ink);
+  line-height: 1;
+}
+
+.wheel {
+  position: absolute;
+  inset: 0;
   animation: spin 75s linear infinite;
+}
+
+.anchor {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+/* Cancels the wheel's rotation so the letter keeps pointing down */
+.counter {
+  display: inline-block;
+  animation: counterSpin 75s linear infinite;
+}
+
+/* The glyph hangs from a pivot just above it and swings like a charm */
+.letter {
+  display: inline-block;
+  margin-left: -0.5ch;
+  transform-origin: 50% -0.25em;
+  animation-name: dangle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 @keyframes spin {
@@ -8,9 +41,17 @@
   }
 }
 
-.logo text {
-  font-family: var(--font-mono);
-  font-size: 50px;
-  font-weight: 700;
-  fill: var(--color-ink);
+@keyframes counterSpin {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes dangle {
+  from {
+    transform: rotate(-8deg);
+  }
+  to {
+    transform: rotate(8deg);
+  }
 }

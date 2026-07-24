@@ -27,7 +27,7 @@ export default async function Home() {
     <Frame contactLine={buildContactLine(me)}>
       <div className={styles.home}>
         <section className={styles.intro}>
-          <Logo size={280} />
+          <Logo size={240} />
           <p className={styles.tagline}>
             Curious.
             <br />
