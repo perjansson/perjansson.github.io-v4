@@ -7,7 +7,7 @@ test.describe('front page', () => {
 
   test('has title, logo and tagline', async ({ page }) => {
     await expect(page).toHaveTitle(/Per Jansson - Fullstack Web Developer/)
-    await expect(page.getByRole('img', { name: 'Jansson' })).toBeVisible()
+    await expect(page.getByRole('img', { name: 'Per Jansson' })).toBeVisible()
     await expect(page.getByText('Curious.')).toBeVisible()
   })
 

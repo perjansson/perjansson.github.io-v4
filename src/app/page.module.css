@@ -15,6 +15,11 @@
   text-align: center;
   min-height: 0;
   overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.intro::-webkit-scrollbar {
+  display: none;
 }
 
 .tagline {
