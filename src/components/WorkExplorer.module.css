@@ -1,3 +1,19 @@
+/* Re-runs whenever the filter changes (the wrapper is re-keyed) */
+.lists {
+  animation: listFade 0.3s ease;
+}
+
+@keyframes listFade {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .section + .section {
   margin-top: 3.2rem;
 }
@@ -42,20 +58,22 @@
   color: var(--color-bg);
 }
 
-/* Filter chips: inverted by default so pressing feels like flipping a key */
-.techChip {
+/* Filter chips. The button.* prefix out-specifies the global
+   button.chip:hover rule, so a pressed chip stays visibly selected
+   even while the cursor is still on it. */
+button.techChip {
   background: var(--color-panel);
   color: var(--color-ink);
   padding: 0.28em 0.75em;
 }
 
-.techChip:hover {
+button.techChip:hover {
   background: var(--color-ink);
   color: var(--color-bg);
 }
 
-.techChipActive,
-.techChipActive:hover {
+button.techChipActive,
+button.techChipActive:hover {
   background: var(--color-ink);
   color: var(--color-bg);
 }
