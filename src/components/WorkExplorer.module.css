@@ -13,9 +13,15 @@
   align-content: flex-start;
   gap: 0.55rem;
   max-width: 28rem;
-  /* Room for the chips' borders at the box edges */
-  padding: 2px;
-  mask-image: linear-gradient(#000 84%, transparent);
+  /* The block padding matches the fade zones below, so fully scrolled
+     rows sit clear of the fade instead of being swallowed by it */
+  padding: 0.9rem 2px;
+  mask-image: linear-gradient(
+    transparent,
+    #000 0.9rem,
+    #000 calc(100% - 0.9rem),
+    transparent
+  );
 }
 
 .filters::-webkit-scrollbar {
