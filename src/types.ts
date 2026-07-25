@@ -14,6 +14,12 @@ export interface Collaborator {
   linkedin?: string
 }
 
+/** Stored in the `links` JSON field: press coverage, awards, case studies */
+export interface ProjectLink {
+  label: string
+  url: string
+}
+
 export interface ProjectType {
   sys: SysId
   title: string
@@ -31,6 +37,7 @@ export interface ProjectType {
   startdate: string
   enddate: string | null
   city: string
+  links?: Array<ProjectLink> | null
   collaborators: {
     items: Array<Collaborator>
   }

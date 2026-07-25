@@ -57,6 +57,7 @@ export const getProjectPageDataQuery = (id: string) => `{
         enddate
         city
         tags
+        links
         asset {
             url
         }

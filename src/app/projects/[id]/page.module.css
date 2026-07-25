@@ -48,6 +48,34 @@
   gap: 0.55rem;
 }
 
+.links {
+  list-style: none;
+}
+
+.linkRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 0.45rem;
+}
+
+.linkLabel {
+  font-weight: 700;
+}
+
+a.linkLabel:hover {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+
+.linkHost {
+  color: var(--color-ink-dim);
+  font-size: 0.85rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .collaborators {
   list-style: none;
 }

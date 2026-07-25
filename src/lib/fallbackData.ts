@@ -47,6 +47,10 @@ const sampleProjects: ProjectType[] = [
     startdate: '2023-01-01',
     enddate: null,
     city: 'Helsinki',
+    links: [
+      { label: 'Sample Award 2025', url: 'https://example.com/award' },
+      { label: 'Case study', url: 'https://example.com/case-study' },
+    ],
     collaborators: {
       items: [{ name: 'Sample Collaborator', company: 'Studio North' }],
     },

@@ -56,6 +56,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const collaborators = project.collaborators?.items ?? []
 
+  // The `links` JSON field is freeform in Contentful — only render
+  // entries that actually look like {label, url}
+  const links = (project.links ?? []).filter(
+    (link) => typeof link?.label === 'string' && typeof link?.url === 'string'
+  )
+
   return (
     <Frame contactLine={buildContactLine(indexData.data.me)}>
       <SplitPanel
@@ -92,6 +98,29 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <h2 className={styles.heading}>My part in it</h2>
           <RichText richText={project.me} className={styles.prose} />
         </section>
+
+        {links.length > 0 && (
+          <section className={styles.section}>
+            <h2 className={styles.heading}>In the papers</h2>
+            <ul className={styles.links}>
+              {links.map(({ label, url }) => (
+                <li key={url} className={styles.linkRow}>
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.linkLabel}
+                  >
+                    {label}
+                  </a>
+                  <span className={styles.linkHost} aria-hidden="true">
+                    {new URL(url).hostname.replace(/^www\./, '')} ↗
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {project.tags && project.tags.length > 0 && (
           <section className={styles.section}>
