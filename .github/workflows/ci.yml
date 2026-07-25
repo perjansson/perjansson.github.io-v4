@@ -3,6 +3,10 @@ name: CI & Deploy
 on:
   push:
   workflow_dispatch:
+  # Fired by the Contentful webhook on entry/asset publish, so content
+  # changes redeploy the site — through the same build + test gate
+  repository_dispatch:
+    types: [contentful-publish]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
