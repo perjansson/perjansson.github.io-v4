@@ -1,24 +1,25 @@
-/* One fixed-height row that scrolls sideways — chip count can grow
-   forever and toggling filters never moves the page vertically. On
-   mobile the whole rail is hidden; it eats too much screen there. */
+/* A fixed-size chip box under the logo: several rows visible, the
+   rest reachable by internal scroll. The constant height keeps the
+   logo in place and makes filtering jump-free, and any number of
+   future techs simply scrolls. The bottom fade hints at more. On
+   mobile the whole box is hidden; it eats too much screen there. */
 .filters {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  overflow-x: auto;
+  height: clamp(8rem, 20vh, 11.5rem);
+  overflow-y: auto;
   scrollbar-width: none;
-  min-height: 2.4rem;
-  margin-bottom: 2.6rem;
-  /* Room for the chips' borders at the row's edges */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 0.55rem;
+  max-width: 28rem;
+  /* Room for the chips' borders at the box edges */
   padding: 2px;
+  mask-image: linear-gradient(#000 84%, transparent);
 }
 
 .filters::-webkit-scrollbar {
   display: none;
-}
-
-.filters > * {
-  flex-shrink: 0;
 }
 
 @media (max-width: 860px) {
