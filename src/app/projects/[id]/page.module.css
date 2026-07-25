@@ -101,3 +101,18 @@ a.linkLabel:hover {
   white-space: nowrap;
 }
 
+/* On narrow screens the two columns squeeze each other into ugly
+   wraps — stack each link instead: label on top, source below */
+@media (max-width: 860px) {
+  .linkRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    padding-block: 0.55rem;
+  }
+
+  .linkHost {
+    text-align: left;
+  }
+}
+
