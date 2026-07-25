@@ -16,9 +16,15 @@
   position: absolute;
   left: 50%;
   top: 50%;
+  width: 0;
+  height: 0;
 }
 
-/* Cancels the wheel's rotation so the letter keeps pointing down */
+/* Cancels the wheel's rotation so the letter keeps pointing down.
+   The translate centers the glyph exactly on its ring point — any
+   constant offset would get swept around by the wheel's spin and
+   make the whole letter cloud orbit off-center instead of rotating
+   in place. */
 .counter {
   display: inline-block;
   animation: counterSpin 75s linear infinite;
@@ -27,7 +33,6 @@
 /* The glyph hangs from a pivot just above it and swings like a charm */
 .letter {
   display: inline-block;
-  margin-left: -0.5ch;
   transform-origin: 50% -0.25em;
   animation-name: dangle;
   animation-timing-function: ease-in-out;
@@ -42,8 +47,11 @@
 }
 
 @keyframes counterSpin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
   to {
-    transform: rotate(-360deg);
+    transform: translate(-50%, -50%) rotate(-360deg);
   }
 }
 
