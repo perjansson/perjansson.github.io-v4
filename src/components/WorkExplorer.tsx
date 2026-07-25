@@ -60,42 +60,40 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
   const rest = visible.filter((item) => !item.promoted)
 
   return (
-    <SplitPanel
-      title="Work"
-      align="top"
-      chips={
-        <div className={styles.filters}>
-          {shownStats.map(({ name, projectCount, months, scale }) => (
-            <button
-              key={name}
-              type="button"
-              className={`chip ${styles.techChip} ${
-                activeTechs.includes(name) ? styles.techChipActive : ''
-              }`}
-              style={{ fontSize: `${0.62 + scale * 0.42}rem` }}
-              onClick={() => toggleTech(name)}
-              aria-pressed={activeTechs.includes(name)}
-              title={`${projectCount} project${
-                projectCount === 1 ? '' : 's'
-              }, about ${Math.round(months / 12)} year${
-                Math.round(months / 12) === 1 ? '' : 's'
-              }`}
-            >
-              {name}
-            </button>
-          ))}
-          {activeTechs.length > 0 && (
-            <button
-              type="button"
-              className={`chip ${styles.clearChip}`}
-              onClick={() => setActiveTechs([])}
-            >
-              × Clear filter
-            </button>
-          )}
-        </div>
-      }
-    >
+    <SplitPanel title="Work">
+      {/* A fixed-height, sideways-scrolling rail: any number of techs
+          fits, and filtering never shifts the page vertically */}
+      <div className={styles.filters}>
+        {activeTechs.length > 0 && (
+          <button
+            type="button"
+            className={`chip ${styles.clearChip}`}
+            onClick={() => setActiveTechs([])}
+          >
+            × Clear
+          </button>
+        )}
+        {shownStats.map(({ name, projectCount, months, scale }) => (
+          <button
+            key={name}
+            type="button"
+            className={`chip ${styles.techChip} ${
+              activeTechs.includes(name) ? styles.techChipActive : ''
+            }`}
+            style={{ fontSize: `${0.62 + scale * 0.42}rem` }}
+            onClick={() => toggleTech(name)}
+            aria-pressed={activeTechs.includes(name)}
+            title={`${projectCount} project${
+              projectCount === 1 ? '' : 's'
+            }, about ${Math.round(months / 12)} year${
+              Math.round(months / 12) === 1 ? '' : 's'
+            }`}
+          >
+            {name}
+          </button>
+        ))}
+      </div>
+
       {/* Keyed by the visible projects, so the fade only plays when the
           list actually changes — not on every chip press */}
       <div key={visible.map((item) => item.id).join('|')} className={styles.lists}>

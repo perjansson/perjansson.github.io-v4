@@ -1,3 +1,5 @@
+/* The caller's className controls the wrapper's size; both layers
+   fill it with object-fit cover */
 .wrapper {
   position: relative;
   display: block;
@@ -16,9 +18,11 @@
 }
 
 .image {
-  position: relative;
-  display: block;
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
   opacity: 0;
   transition: opacity 0.5s ease;
 }

@@ -109,7 +109,7 @@ test.describe('work page', () => {
       )
     }
 
-    await page.getByRole('button', { name: /clear filter/i }).click()
+    await page.getByRole('button', { name: /clear/i }).click()
     expect(await page.getByRole('listitem').count()).toBe(allCount)
   })
 

@@ -1,7 +1,24 @@
-/* On desktop the wrapper dissolves into the chips flex row; on mobile
-   the whole filter block is hidden — it eats too much screen there */
+/* One fixed-height row that scrolls sideways — chip count can grow
+   forever and toggling filters never moves the page vertically. On
+   mobile the whole rail is hidden; it eats too much screen there. */
 .filters {
-  display: contents;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  min-height: 2.4rem;
+  margin-bottom: 2.6rem;
+  /* Room for the chips' borders at the row's edges */
+  padding: 2px;
+}
+
+.filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filters > * {
+  flex-shrink: 0;
 }
 
 @media (max-width: 860px) {

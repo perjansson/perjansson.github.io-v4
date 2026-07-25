@@ -1,20 +1,25 @@
-/* Left-panel hero: image, project name and facts stacked */
+/* Left-panel hero: image, project name and facts stacked. Sized to
+   fit the frame without scrolling; margin-block auto centers it when
+   there is room (and unlike justify-content it scrolls correctly when
+   there is not) */
 .hero {
   width: min(100%, 26rem);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.9rem;
+  gap: 1.1rem;
+  margin-block: auto;
 }
 
 .heroImage {
   width: 100%;
+  height: clamp(8rem, 22vh, 13rem);
   border: var(--border);
   filter: grayscale(0.2) contrast(1.02);
 }
 
 .heroTitle {
-  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  font-size: clamp(1.3rem, 1.9vw, 1.7rem);
   font-weight: 700;
   letter-spacing: 0.1em;
 }
@@ -24,12 +29,18 @@
   width: 100%;
 }
 
+@media (max-width: 860px) {
+  .heroImage {
+    height: clamp(11rem, 34vw, 17rem);
+  }
+}
+
 .factRow {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1.5rem;
-  padding-block: 0.45rem;
+  padding-block: 0.3rem;
 }
 
 .factLabel {
