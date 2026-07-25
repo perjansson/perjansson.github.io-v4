@@ -1,0 +1,28 @@
+.wrapper {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Hide the heavy JPEG blockiness of the tiny preview */
+  filter: blur(14px);
+  transform: scale(1.06);
+}
+
+.image {
+  position: relative;
+  display: block;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.imageLoaded {
+  opacity: 1;
+}

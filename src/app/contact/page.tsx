@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { getIndexPageData } from '../../lib/api'
-import { buildContactLine } from '../../lib/contactLine'
+import { buildContactEmail } from '../../lib/contactLine'
 import { Frame } from '../../components/Frame'
 import { SplitPanel } from '../../components/SplitPanel'
 import styles from './page.module.css'
@@ -33,7 +33,7 @@ export default async function ContactPage() {
   const { me } = data
 
   return (
-    <Frame contactLine={buildContactLine(me)}>
+    <Frame contactEmail={buildContactEmail(me)}>
       <SplitPanel title="Contact">
         <h2 className={styles.heading}>Find me here</h2>
         <ul className={styles.list}>

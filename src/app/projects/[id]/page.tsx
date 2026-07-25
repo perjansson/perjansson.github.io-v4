@@ -2,15 +2,17 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { getAllProjects, getIndexPageData, getProjectDetails } from '../../../lib/api'
-import { buildContactLine } from '../../../lib/contactLine'
+import { buildContactEmail } from '../../../lib/contactLine'
 import {
   contentfulImageSrcSet,
   contentfulImageUrl,
 } from '../../../lib/contentfulImage'
 import { formatPeriodDetailed } from '../../../lib/projectHelper'
+import { canonicalTech } from '../../../lib/workData'
 import { Frame } from '../../../components/Frame'
 import { SplitPanel } from '../../../components/SplitPanel'
 import { RichText } from '../../../components/RichText'
+import { FadeImage } from '../../../components/FadeImage'
 import styles from './page.module.css'
 
 interface ProjectPageProps {
@@ -32,7 +34,7 @@ export async function generateMetadata({
 
   return {
     title: `Per Jansson - Curious Software Craftsman - ${project.titleShort}`,
-    description: `I'm Per, a curious software developer. This is the story of me helping out building ${project.title}`,
+    description: `I'm Per, a curious software craftsman. This is the story of me helping out building ${project.title}`,
   }
 }
 
@@ -54,41 +56,44 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     },
   ].filter(({ value }) => Boolean(value))
 
-  const collaborators = project.collaborators?.items ?? []
-
   // The `links` JSON field is freeform in Contentful — only render
   // entries that actually look like {label, url}
   const links = (project.links ?? []).filter(
     (link) => typeof link?.label === 'string' && typeof link?.url === 'string'
   )
 
+  // The curated tech list (same spelling fixes as the work page filters)
+  const tech = (project.tech ?? []).map(canonicalTech)
+
   return (
-    <Frame contactLine={buildContactLine(indexData.data.me)}>
+    <Frame contactEmail={buildContactEmail(indexData.data.me)}>
       <SplitPanel
-        title={project.titleShort}
-        chips={
-          <Link href="/work/" className="chip">
-            ← All work
-          </Link>
+        align="top"
+        left={
+          <div className={styles.hero}>
+            <FadeImage
+              className={styles.heroImage}
+              src={contentfulImageUrl(project.asset.url, { width: 1400 })}
+              srcSet={contentfulImageSrcSet(project.asset.url, [700, 1400, 2000])}
+              sizes="(max-width: 860px) 100vw, 50vw"
+              alt=""
+              placeholder={project.assetPlaceholder}
+            />
+            <h1 className={styles.heroTitle}>{project.titleShort}</h1>
+            <ul className={styles.facts}>
+              {facts.map(({ label, value }) => (
+                <li key={label} className={styles.factRow}>
+                  <span className={styles.factLabel}>{label}</span>
+                  <span className={styles.factValue}>{value}</span>
+                </li>
+              ))}
+            </ul>
+            <Link href="/work/" className="chip">
+              ← All work
+            </Link>
+          </div>
         }
       >
-        <img
-          className={styles.image}
-          src={contentfulImageUrl(project.asset.url, { width: 1400 })}
-          srcSet={contentfulImageSrcSet(project.asset.url, [700, 1400, 2000])}
-          sizes="(max-width: 860px) 100vw, 50vw"
-          alt=""
-        />
-
-        <ul className={styles.facts}>
-          {facts.map(({ label, value }) => (
-            <li key={label} className={styles.factRow}>
-              <span className={styles.factLabel}>{label}</span>
-              <span className={styles.factValue}>{value}</span>
-            </li>
-          ))}
-        </ul>
-
         <section className={styles.section}>
           <h2 className={styles.heading}>The project</h2>
           <RichText richText={project.description} className={styles.prose} />
@@ -122,41 +127,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </section>
         )}
 
-        {project.tags && project.tags.length > 0 && (
+        {tech.length > 0 && (
           <section className={styles.section}>
             <h2 className={styles.heading}>On the plate</h2>
             <div className={styles.tags}>
-              {project.tags.map((tag) => (
-                <span key={tag} className="chip">
-                  {tag}
+              {tech.map((name) => (
+                <span key={name} className="chip">
+                  {name}
                 </span>
               ))}
             </div>
-          </section>
-        )}
-
-        {collaborators.length > 0 && (
-          <section className={styles.section}>
-            <h2 className={styles.heading}>Around the table</h2>
-            <ul className={styles.collaborators}>
-              {collaborators.map(({ name, company, linkedin }) => (
-                <li key={name + company} className={styles.collabRow}>
-                  {linkedin ? (
-                    <a
-                      href={linkedin}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={styles.collabName}
-                    >
-                      {name}
-                    </a>
-                  ) : (
-                    <span className={styles.collabName}>{name}</span>
-                  )}
-                  <span className={styles.collabCompany}>{company}</span>
-                </li>
-              ))}
-            </ul>
           </section>
         )}
       </SplitPanel>

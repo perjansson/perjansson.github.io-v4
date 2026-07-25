@@ -31,7 +31,7 @@ export interface ProjectType {
   tech?: Array<string>
   /** Optional Contentful boolean; undefined when the field doesn't exist in the content model yet */
   promoted?: boolean | null
-  tags: Array<string>
+  tags?: Array<string>
   asset: ImageType
   assetPlaceholder?: string
   startdate: string

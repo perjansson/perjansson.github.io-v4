@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { getIndexPageData } from '../../lib/api'
-import { buildContactLine } from '../../lib/contactLine'
+import { buildContactEmail } from '../../lib/contactLine'
 import { Frame } from '../../components/Frame'
 import { SplitPanel } from '../../components/SplitPanel'
 import { RichText } from '../../components/RichText'
@@ -16,7 +16,7 @@ export default async function StoryPage() {
   const { me } = data
 
   return (
-    <Frame contactLine={buildContactLine(me)}>
+    <Frame contactEmail={buildContactEmail(me)}>
       <SplitPanel title="The Story">
         <h2 className={styles.heading}>About me</h2>
         <img

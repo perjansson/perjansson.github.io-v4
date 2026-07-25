@@ -1,13 +1,27 @@
-.image {
+/* Left-panel hero: image, project name and facts stacked */
+.hero {
+  width: min(100%, 26rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.9rem;
+}
+
+.heroImage {
   width: 100%;
   border: var(--border);
   filter: grayscale(0.2) contrast(1.02);
-  margin-bottom: 2.4rem;
+}
+
+.heroTitle {
+  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }
 
 .facts {
   list-style: none;
-  margin-bottom: 2.8rem;
+  width: 100%;
 }
 
 .factRow {
@@ -76,29 +90,3 @@ a.linkLabel:hover {
   white-space: nowrap;
 }
 
-.collaborators {
-  list-style: none;
-}
-
-.collabRow {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding-block: 0.45rem;
-}
-
-.collabName {
-  font-weight: 700;
-}
-
-a.collabName:hover {
-  background: var(--color-ink);
-  color: var(--color-bg);
-}
-
-.collabCompany {
-  color: var(--color-ink-dim);
-  font-size: 0.85rem;
-  text-align: right;
-}

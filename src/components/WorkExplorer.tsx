@@ -62,6 +62,7 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
   return (
     <SplitPanel
       title="Work"
+      align="top"
       chips={
         <div className={styles.filters}>
           {shownStats.map(({ name, projectCount, months, scale }) => (

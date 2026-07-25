@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { getIndexPageData } from '../../lib/api'
-import { buildContactLine } from '../../lib/contactLine'
+import { buildContactEmail } from '../../lib/contactLine'
 import { buildTechStats, buildWorkItems } from '../../lib/workData'
 import { Frame } from '../../components/Frame'
 import { WorkExplorer } from '../../components/WorkExplorer'
@@ -15,7 +15,7 @@ export default async function WorkPage() {
   const { me, projects } = data
 
   return (
-    <Frame contactLine={buildContactLine(me)}>
+    <Frame contactEmail={buildContactEmail(me)}>
       <WorkExplorer
         items={buildWorkItems(projects.items)}
         techStats={buildTechStats(projects.items)}

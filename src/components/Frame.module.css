@@ -35,7 +35,7 @@
 
 .strip {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
   padding-top: 0.75rem;
@@ -43,21 +43,29 @@
   letter-spacing: 0.04em;
 }
 
+/* Flex-centering the © glyph box against the text beats baseline
+   nudging — Space Mono draws © small and high in its em box */
 .copyright {
   font-weight: 700;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
 }
 
-/* Space Mono draws © small and raised; pull it back to the text's
-   optical center */
 .copyrightSign {
-  display: inline-block;
   font-size: 1.35em;
-  line-height: 0;
-  transform: translateY(0.2em);
+  line-height: 1;
+  transform: translateY(0.06em);
 }
 
-.contactLine {
-  text-align: right;
-  overflow-wrap: anywhere;
+.contactLink {
+  font-weight: 700;
+  white-space: nowrap;
+  padding: 0.1em 0.35em;
+}
+
+.contactLink:hover {
+  background: var(--color-ink);
+  color: var(--color-bg);
 }

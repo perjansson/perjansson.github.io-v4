@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { getIndexPageData } from '../lib/api'
-import { buildContactLine } from '../lib/contactLine'
+import { buildContactEmail } from '../lib/contactLine'
 import { Frame } from '../components/Frame'
 import { Logo } from '../components/Logo'
 import {
@@ -24,7 +24,7 @@ export default async function Home() {
   const { me } = data
 
   return (
-    <Frame contactLine={buildContactLine(me)}>
+    <Frame contactEmail={buildContactEmail(me)}>
       <div className={styles.home}>
         <section className={styles.intro}>
           <Logo size={240} />
