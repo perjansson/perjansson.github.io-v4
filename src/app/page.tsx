@@ -27,7 +27,7 @@ export default async function Home() {
     <Frame contactEmail={buildContactEmail(me)}>
       <div className={styles.home}>
         <section className={styles.intro}>
-          <Logo size={240} />
+          <Logo />
           <p className={styles.tagline}>
             Curious.
             <br />

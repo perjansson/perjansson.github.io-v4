@@ -67,11 +67,14 @@
   margin-top: 1.7rem;
 }
 
+/* The year drops to its own line rather than overflowing when the
+   panel gets narrow */
 .row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.15rem 1.5rem;
 }
 
 .name {
@@ -81,7 +84,6 @@
 
 .year {
   font-weight: 700;
-  white-space: nowrap;
 }
 
 .meta {

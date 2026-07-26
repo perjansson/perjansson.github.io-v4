@@ -33,11 +33,14 @@
   }
 }
 
+/* Wraps rather than overflowing once the two ends stop fitting side by
+   side, which happens on a narrow viewport or a zoomed-in phone */
 .strip {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.5rem;
   padding-top: 0.75rem;
   font-size: 0.82rem;
   letter-spacing: 0.04em;
@@ -45,10 +48,12 @@
 
 /* Flex-centering the © glyph box against the text beats baseline
    nudging — Space Mono draws © small and high in its em box */
+/* No nowrap: at extreme zoom the line is wider than the viewport on its
+   own, so it has to be allowed to break */
 .copyright {
   font-weight: 700;
-  white-space: nowrap;
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.45em;
 }

@@ -39,7 +39,8 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.5rem;
   padding-block: 0.3rem;
 }
 
@@ -52,6 +53,7 @@
 .factValue {
   font-weight: 700;
   text-align: right;
+  min-width: 0;
 }
 
 .heading {
@@ -98,7 +100,6 @@ a.linkLabel:hover {
   color: var(--color-ink-dim);
   font-size: 0.85rem;
   text-align: right;
-  white-space: nowrap;
 }
 
 /* On narrow screens the two columns squeeze each other into ugly

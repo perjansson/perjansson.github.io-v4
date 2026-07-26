@@ -58,6 +58,9 @@ body {
   font-size: 0.95rem;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  /* Long words and URLs break rather than pushing the page sideways
+     when the viewport is tiny, e.g. a phone zoomed right in */
+  overflow-wrap: break-word;
 }
 
 h1,
@@ -95,16 +98,24 @@ a:focus-visible {
 .sectionTitle {
   display: flex;
   align-items: center;
-  gap: 1.1rem;
+  flex-wrap: wrap;
+  gap: 0.4rem clamp(0.5rem, 3vw, 1.1rem);
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  /* Flex items won't shrink below their min-content width, and only
+     `anywhere` (not `break-word`) reduces that — without it a single
+     long heading word keeps the whole panel wide */
+  overflow-wrap: anywhere;
+  min-width: 0;
 }
 
+/* The rule shrinks with the viewport instead of reserving 3.1rem the
+   text no longer has room for */
 .sectionTitle::before {
   content: '';
-  width: 3.1rem;
+  width: clamp(1.2rem, 12vw, 3.1rem);
   height: 0.95rem;
   background: var(--color-ink);
   flex: none;
@@ -122,6 +133,9 @@ a:focus-visible {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  /* A long tech name breaks rather than widening the page when the
+     viewport is tiny, e.g. a zoomed-in phone */
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition:
     background-color 0.15s ease,

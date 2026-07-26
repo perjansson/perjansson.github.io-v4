@@ -1,7 +1,11 @@
+/* Wraps instead of pushing the burger off the edge once the viewport
+   is too narrow to hold icons, toggle and burger on one line */
 .bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem clamp(0.6rem, 3vw, 1.6rem);
   padding-bottom: 0.9rem;
 }
 
@@ -29,7 +33,7 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: clamp(0.7rem, 3vw, 1.6rem);
 }
 
 .burger {

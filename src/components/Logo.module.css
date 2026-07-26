@@ -1,5 +1,13 @@
+/* 15rem is the design size; the vw term takes over once the viewport
+   is too narrow to hold it, which is what a zoomed-in phone reports.
+   The ring radius is in em (see Logo.tsx), so the letters follow. */
 .logo {
+  --logo-size: min(15rem, 58vw);
   position: relative;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  font-size: calc(var(--logo-size) * 0.19);
+  flex: none;
   font-family: var(--font-mono);
   font-weight: 700;
   color: var(--color-ink);
