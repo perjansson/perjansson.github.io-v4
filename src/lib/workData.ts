@@ -82,8 +82,8 @@ const TECH_POPULARITY: Record<string, number> = {
   SonarQube: 0.5,
   'SQL Server': 0.5,
   PWA: 0.5,
-  HTML: 0.5,
-  CSS: 0.5,
+  HTML: 0.4,
+  CSS: 0.4,
   Jenkins: 0.45,
   SASS: 0.45,
   Redux: 0.45,
@@ -124,6 +124,70 @@ const TECH_POPULARITY: Record<string, number> = {
 
 const popularityOf = (name: string) => TECH_POPULARITY[name] ?? 0.5
 
+// What kind of thing is it? A language is the deepest claim you can
+// make about someone, a framework is the next, and a tool is real but
+// shallower — you can learn Figma in a week and not TypeScript. This
+// tilts the cloud rather than sorting it, so a tool used constantly on
+// current work still places high; it just won't lead.
+//
+// "Framework" is the broad middle: libraries, runtimes, platforms,
+// databases and test frameworks all sit here. Anything unlisted lands
+// here too, which is the safe default.
+type TechKind = 'language' | 'framework' | 'tool'
+
+const KIND_WEIGHT: Record<TechKind, number> = {
+  language: 1,
+  framework: 0.85,
+  tool: 0.6,
+}
+
+const LANGUAGES = [
+  'TypeScript',
+  'JavaScript',
+  'Java',
+  'Kotlin',
+  'HTML',
+  'CSS',
+  'SASS',
+]
+
+const TOOLS = [
+  // Design and planning
+  'Figma',
+  'Zeplin',
+  'Miro',
+  'Jira',
+  // Build, CI and quality
+  'Maven',
+  'Jenkins',
+  'Hudson',
+  'Apache Continuum',
+  'GitHub Actions',
+  'Bazel',
+  'Lerna',
+  'SonarQube',
+  'Standard JS',
+  'Storybook',
+  'Sculptor',
+  // Runtime platforms and hosting
+  'Docker',
+  'AWS',
+  'GCP',
+  'Heroku',
+  // Editors and SDK tooling
+  'Eclipse',
+  'ADT',
+  'Claude Code',
+]
+
+const TECH_KIND: Record<string, TechKind> = {
+  ...Object.fromEntries(LANGUAGES.map((name) => [name, 'language' as const])),
+  ...Object.fromEntries(TOOLS.map((name) => [name, 'tool' as const])),
+}
+
+const kindWeightOf = (name: string) =>
+  KIND_WEIGHT[TECH_KIND[name] ?? 'framework']
+
 const MS_PER_YEAR = 365.25 * 24 * 60 * 60 * 1000
 
 const monthsBetween = (start: string, end: string | null | undefined) => {
@@ -163,6 +227,7 @@ export const buildWorkItems = (projects: ProjectType[]): WorkItem[] =>
 //                                   since the project ended; still-running
 //                                   work counts in full
 //   3. how current the tech is     — the popularity table above
+//   4. what kind of thing it is    — language over framework over tool
 //
 // Without (2) a decade of mid-2000s Java outweighed four current years
 // of Kotlin, which is the opposite of what a reader needs to know.
@@ -207,7 +272,8 @@ export const buildTechStats = (
     months: entry.months,
     score:
       entry.usage *
-      (POPULARITY_FLOOR + (1 - POPULARITY_FLOOR) * popularityOf(name)),
+      (POPULARITY_FLOOR + (1 - POPULARITY_FLOOR) * popularityOf(name)) *
+      kindWeightOf(name),
   }))
 
   const maxScore = Math.max(...scored.map(({ score }) => score), 1)
