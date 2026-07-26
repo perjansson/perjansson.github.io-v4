@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 
-import { TechStat, WorkItem } from '../lib/workData'
+import { TECH_KINDS, TechStat, WorkItem } from '../lib/workData'
 import { SplitPanel } from './SplitPanel'
 import styles from './WorkExplorer.module.css'
 
@@ -116,36 +116,66 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
         // A fixed-size box under the logo: several chip rows visible,
         // internal scroll for the rest — its height never changes, so
         // the logo stays put and filtering can't shift the page
-        <div className={styles.filters}>
-          {activeTechs.length > 0 && (
-            <button
-              type="button"
-              className={`chip ${styles.clearChip}`}
-              onClick={() => applyTechs([])}
-            >
-              × Clear
-            </button>
-          )}
-          {shownStats.map(({ name, projectCount, months, scale }) => (
-            <button
-              key={name}
-              type="button"
-              className={`chip ${styles.techChip} ${
-                activeTechs.includes(name) ? styles.techChipActive : ''
-              }`}
-              style={{ fontSize: `${0.62 + scale * 0.42}rem` }}
-              onClick={() => toggleTech(name)}
-              aria-pressed={activeTechs.includes(name)}
-              title={`${projectCount} project${
-                projectCount === 1 ? '' : 's'
-              }, about ${Math.round(months / 12)} year${
-                Math.round(months / 12) === 1 ? '' : 's'
-              }`}
-            >
-              {name}
-            </button>
-          ))}
-        </div>
+        <>
+          <div className={styles.filters}>
+            {activeTechs.length > 0 && (
+              <button
+                type="button"
+                className={`chip ${styles.clearChip}`}
+                onClick={() => applyTechs([])}
+              >
+                × Clear
+              </button>
+            )}
+            {TECH_KINDS.map(({ kind, label }) => {
+              const group = shownStats.filter((stat) => stat.kind === kind)
+              if (group.length === 0) {
+                return null
+              }
+
+              return (
+                <div
+                  key={kind}
+                  className={styles.group}
+                  role="group"
+                  aria-labelledby={`tech-kind-${kind}`}
+                >
+                  <p id={`tech-kind-${kind}`} className={styles.groupLabel}>
+                    {label}
+                  </p>
+                  <div className={styles.groupChips}>
+                    {group.map(({ name, projectCount, months, scale }) => (
+                      <button
+                        key={name}
+                        type="button"
+                        className={`chip ${styles.techChip} ${
+                          activeTechs.includes(name) ? styles.techChipActive : ''
+                        }`}
+                        style={{ fontSize: `${0.62 + scale * 0.42}rem` }}
+                        onClick={() => toggleTech(name)}
+                        aria-pressed={activeTechs.includes(name)}
+                        title={`${projectCount} project${
+                          projectCount === 1 ? '' : 's'
+                        }, about ${Math.round(months / 12)} year${
+                          Math.round(months / 12) === 1 ? '' : 's'
+                        }`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          {/* aria-live so a screen reader hears the list shrink; the chips
+              themselves only announce their own pressed state */}
+          <p className={styles.matchCount} aria-live="polite">
+            {activeTechs.length > 0
+              ? `${visible.length} of ${items.length} projects`
+              : `${items.length} projects`}
+          </p>
+        </>
       }
     >
       {/* Keyed by the visible projects, so the fade only plays when the

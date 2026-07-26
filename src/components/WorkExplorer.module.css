@@ -4,14 +4,13 @@
    future techs simply scrolls. The bottom fade hints at more. On
    mobile the whole box is hidden; it eats too much screen there. */
 .filters {
-  height: clamp(8rem, 20vh, 11.5rem);
+  height: clamp(8rem, 22vh, 12.5rem);
   overflow-y: auto;
   scrollbar-width: none;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: flex-start;
-  gap: 0.55rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
   max-width: 28rem;
   /* The block padding matches the fade zones below, so fully scrolled
      rows sit clear of the fade instead of being swallowed by it */
@@ -28,8 +27,44 @@
   display: none;
 }
 
+/* Languages, then frameworks and libraries, then tools — the same order
+   the sizing algorithm weights them in, so the cloud reads as a claim
+   about depth rather than an undifferentiated pile */
+.group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.groupLabel {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ink-dim);
+}
+
+.groupChips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.matchCount {
+  margin-top: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-dim);
+}
+
 @media (max-width: 860px) {
-  .filters {
+  .filters,
+  .matchCount {
     display: none;
   }
 }

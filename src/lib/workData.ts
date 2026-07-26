@@ -17,6 +17,7 @@ export interface TechStat {
   months: number
   /** 0..1, relative to the heaviest tech */
   scale: number
+  kind: TechKind
 }
 
 // Same tech, different spellings in the content
@@ -133,7 +134,14 @@ const popularityOf = (name: string) => TECH_POPULARITY[name] ?? 0.5
 // "Framework" is the broad middle: libraries, runtimes, platforms,
 // databases and test frameworks all sit here. Anything unlisted lands
 // here too, which is the safe default.
-type TechKind = 'language' | 'framework' | 'tool'
+export type TechKind = 'language' | 'framework' | 'tool'
+
+// Reading order for the chip cloud, headings included
+export const TECH_KINDS: ReadonlyArray<{ kind: TechKind; label: string }> = [
+  { kind: 'language', label: 'Languages' },
+  { kind: 'framework', label: 'Frameworks and libraries' },
+  { kind: 'tool', label: 'Tools' },
+]
 
 const KIND_WEIGHT: Record<TechKind, number> = {
   language: 1,
@@ -185,8 +193,9 @@ const TECH_KIND: Record<string, TechKind> = {
   ...Object.fromEntries(TOOLS.map((name) => [name, 'tool' as const])),
 }
 
-const kindWeightOf = (name: string) =>
-  KIND_WEIGHT[TECH_KIND[name] ?? 'framework']
+const kindOf = (name: string): TechKind => TECH_KIND[name] ?? 'framework'
+
+const kindWeightOf = (name: string) => KIND_WEIGHT[kindOf(name)]
 
 const MS_PER_YEAR = 365.25 * 24 * 60 * 60 * 1000
 
@@ -285,5 +294,6 @@ export const buildTechStats = (
       projectCount,
       months,
       scale: scaleCurve(score / maxScore),
+      kind: kindOf(name),
     }))
 }
