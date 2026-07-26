@@ -117,3 +117,44 @@ a.linkLabel:hover {
   }
 }
 
+/* Newer on the left, older on the right, following the same ordering as
+   the work list. `space-between` with a placeholder span keeps the older
+   end pinned right on the first project, where there is no newer one. */
+.pager {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  border-top: var(--border);
+  padding-top: 1.4rem;
+}
+
+.pagerLink {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.pagerLinkEnd {
+  text-align: right;
+  margin-left: auto;
+}
+
+.pagerLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-dim);
+}
+
+.pagerTitle {
+  font-weight: 700;
+}
+
+.pagerLink:hover .pagerTitle {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+

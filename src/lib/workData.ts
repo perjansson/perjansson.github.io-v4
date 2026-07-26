@@ -32,6 +32,30 @@ const TECH_ALIASES: Record<string, string> = {
 
 export const canonicalTech = (name: string) => TECH_ALIASES[name] ?? name
 
+/** Query param carrying the active tech filter on /work */
+export const TECH_PARAM = 'tech'
+
+// Comma separated, so a shared link reads /work/?tech=Kotlin,Jetpack%20Compose
+// instead of a wall of repeated keys. No tech name contains a comma.
+export const techFilterHref = (techs: string[]) =>
+  techs.length
+    ? `/work/?${TECH_PARAM}=${techs.map(encodeURIComponent).join(',')}`
+    : '/work/'
+
+// Unknown names are dropped rather than trusted, so a stale or hand-edited
+// link degrades to the full list instead of an empty one with no chip left
+// to press.
+export const parseTechFilter = (search: string, known: Set<string>) => {
+  const raw = new URLSearchParams(search).get(TECH_PARAM)
+  if (!raw) {
+    return []
+  }
+  return raw
+    .split(',')
+    .map((name) => name.trim())
+    .filter((name) => known.has(name))
+}
+
 // How current each tech is today, 0 (retired) to 1 (what people reach
 // for now). This is the "would a reader recognise this as current?"
 // axis — not how much Per liked it. Editorial judgment, tune freely.

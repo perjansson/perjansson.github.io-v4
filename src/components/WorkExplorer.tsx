@@ -3,7 +3,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 
-import { TECH_KINDS, TechStat, WorkItem } from '../lib/workData'
+import {
+  TECH_KINDS,
+  TechStat,
+  WorkItem,
+  parseTechFilter,
+  techFilterHref,
+} from '../lib/workData'
 import { SplitPanel } from './SplitPanel'
 import styles from './WorkExplorer.module.css'
 
@@ -11,28 +17,6 @@ interface WorkExplorerProps {
   items: WorkItem[]
   techStats: TechStat[]
 }
-
-const TECH_PARAM = 'tech'
-
-// Comma separated, so a shared link reads /work/?tech=Kotlin,Jetpack%20Compose
-// instead of a wall of repeated keys. No tech name contains a comma.
-// Unknown names are dropped rather than trusted, otherwise a stale or
-// hand-edited link lands on an empty list with no chip left to press.
-const parseTechParam = (search: string, known: Set<string>) => {
-  const raw = new URLSearchParams(search).get(TECH_PARAM)
-  if (!raw) {
-    return []
-  }
-  return raw
-    .split(',')
-    .map((name) => name.trim())
-    .filter((name) => known.has(name))
-}
-
-const techSearch = (techs: string[]) =>
-  techs.length
-    ? `?${TECH_PARAM}=${techs.map(encodeURIComponent).join(',')}`
-    : ''
 
 const ProjectList: React.FC<{ items: WorkItem[] }> = ({ items }) => (
   <ul className={styles.list}>
@@ -70,7 +54,7 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
   // URL is read once on mount and on every popstate.
   useEffect(() => {
     const sync = () =>
-      setActiveTechs(parseTechParam(window.location.search, knownTechs))
+      setActiveTechs(parseTechFilter(window.location.search, knownTechs))
 
     sync()
     window.addEventListener('popstate', sync)
@@ -79,11 +63,7 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
 
   const applyTechs = useCallback((next: string[]) => {
     setActiveTechs(next)
-    window.history.pushState(
-      null,
-      '',
-      `${window.location.pathname}${techSearch(next)}`
-    )
+    window.history.pushState(null, '', techFilterHref(next))
   }, [])
 
   const toggleTech = (tech: string) =>

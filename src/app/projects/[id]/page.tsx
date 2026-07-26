@@ -8,7 +8,7 @@ import {
   contentfulImageUrl,
 } from '../../../lib/contentfulImage'
 import { formatPeriodDetailed } from '../../../lib/projectHelper'
-import { canonicalTech } from '../../../lib/workData'
+import { canonicalTech, techFilterHref } from '../../../lib/workData'
 import { Frame } from '../../../components/Frame'
 import { SplitPanel } from '../../../components/SplitPanel'
 import { RichText } from '../../../components/RichText'
@@ -64,6 +64,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   // The curated tech list (same spelling fixes as the work page filters)
   const tech = (project.tech ?? []).map(canonicalTech)
+
+  // Contentful hands the collection back newest first, so the entry before
+  // this one is the more recent project and the one after is the older
+  const ordered = indexData.data.projects.items
+  const position = ordered.findIndex(({ sys }) => sys.id === id)
+  const newer = position > 0 ? ordered[position - 1] : undefined
+  const older =
+    position >= 0 && position < ordered.length - 1
+      ? ordered[position + 1]
+      : undefined
 
   return (
     <Frame contactEmail={buildContactEmail(indexData.data.me)}>
@@ -130,14 +140,41 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         {tech.length > 0 && (
           <section className={styles.section}>
             <h2 className={styles.heading}>On the plate</h2>
+            {/* Each chip is a way back into the work list, already narrowed
+                to that tech, rather than a dead label */}
             <div className={styles.tags}>
               {tech.map((name) => (
-                <span key={name} className="chip">
+                <Link key={name} href={techFilterHref([name])} className="chip">
                   {name}
-                </span>
+                </Link>
               ))}
             </div>
           </section>
+        )}
+
+        {(newer || older) && (
+          <nav className={styles.pager} aria-label="Other projects">
+            {newer ? (
+              <Link
+                href={`/projects/${newer.sys.id}/`}
+                className={styles.pagerLink}
+              >
+                <span className={styles.pagerLabel}>← Newer</span>
+                <span className={styles.pagerTitle}>{newer.titleShort}</span>
+              </Link>
+            ) : (
+              <span />
+            )}
+            {older && (
+              <Link
+                href={`/projects/${older.sys.id}/`}
+                className={`${styles.pagerLink} ${styles.pagerLinkEnd}`}
+              >
+                <span className={styles.pagerLabel}>Older →</span>
+                <span className={styles.pagerTitle}>{older.titleShort}</span>
+              </Link>
+            )}
+          </nav>
         )}
       </SplitPanel>
     </Frame>
