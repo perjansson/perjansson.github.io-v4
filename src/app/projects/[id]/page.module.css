@@ -22,6 +22,9 @@
   font-size: clamp(1.3rem, 1.9vw, 1.7rem);
   font-weight: 700;
   letter-spacing: 0.1em;
+  /* "Inflight entertainment (IFE)" is wider than a zoomed-in viewport on
+     its own, and only `anywhere` will break inside a word */
+  overflow-wrap: anywhere;
 }
 
 .facts {

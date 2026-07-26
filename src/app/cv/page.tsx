@@ -85,16 +85,19 @@ export default async function CvPage() {
           <h2 className={styles.heading}>Experience</h2>
           {projects.items.map((project) => (
             <div key={project.sys.id} className={styles.entry}>
-              <div className={styles.entryHead}>
-                <h3 className={styles.entryTitle}>
-                  {project.titleShort}
-                  <span className={styles.entryClient}>{project.client}</span>
-                </h3>
-                <p className={styles.entryWhen}>
-                  {formatPeriodDetailed(project.startdate, project.enddate)}
-                  {project.city ? ` · ${project.city}` : ''}
-                </p>
-              </div>
+              {/* Stacked, not two columns: a real entry reads "Inflight
+                  entertainment (IFE) · Cathay Pacific / Panasonic Avionics"
+                  against "Jun 2022 – present · Los Angeles / Hong Kong /
+                  Helsinki / Turku", and side by side neither fits even on
+                  paper. The name was losing and breaking mid-word. */}
+              <h3 className={styles.entryTitle}>
+                {project.titleShort}
+                <span className={styles.entryClient}>{project.client}</span>
+              </h3>
+              <p className={styles.entryWhen}>
+                {formatPeriodDetailed(project.startdate, project.enddate)}
+                {project.city ? ` · ${project.city}` : ''}
+              </p>
               <p className={styles.entryRole}>{project.role}</p>
               {(project.tech ?? []).length > 0 && (
                 <p className={styles.entryTech}>

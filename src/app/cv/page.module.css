@@ -120,19 +120,8 @@
   margin-top: 1.6rem;
 }
 
-.entryHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-
 .entryTitle {
   font-size: 0.98rem;
-  min-width: 0;
-  /* Client names are single unbreakable words; only `anywhere` shrinks a
-     flex item's min-content width */
-  overflow-wrap: anywhere;
 }
 
 .entryClient::before {
@@ -140,9 +129,9 @@
 }
 
 .entryWhen {
-  flex: none;
   font-size: 0.85rem;
   font-weight: 700;
+  margin-top: 0.1rem;
 }
 
 .entryRole {
@@ -199,14 +188,6 @@
 
   .skillLabel {
     width: auto;
-  }
-
-  /* "Feb 2022 – Jun 2022 · Stockholm" will not shrink, so past this width
-     it goes under the project name rather than out through the edge */
-  .entryHead {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.1rem;
   }
 }
 
