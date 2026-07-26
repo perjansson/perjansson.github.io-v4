@@ -4,6 +4,7 @@ import '@fontsource/space-mono/400.css'
 import '@fontsource/space-mono/700.css'
 import './globals.css'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '../lib/site'
+import { ViewTransitions } from '../components/ViewTransitions'
 
 const gaId = process.env.NEXT_PUBLIC_GA_TRACKING_ID
 
@@ -51,6 +52,7 @@ export default function RootLayout({
               "try{var t=localStorage.getItem('theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}if(t==='dark'){document.documentElement.dataset.theme='dark'}}catch(e){}",
           }}
         />
+        <ViewTransitions />
         {children}
       </body>
       {gaId && <GoogleAnalytics gaId={gaId} />}

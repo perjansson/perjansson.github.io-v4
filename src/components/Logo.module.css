@@ -14,6 +14,25 @@
   line-height: 1;
 }
 
+/* Grab-and-spin. pan-y rather than none, so a finger that starts on the
+   logo can still scroll the page vertically on a phone. */
+.logo {
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.dragging {
+  cursor: grabbing;
+}
+
+/* The drag offset, kept off the wheel so the idle rotation keeps running
+   underneath it and the two simply add up */
+.turn {
+  position: absolute;
+  inset: 0;
+}
+
 .wheel {
   position: absolute;
   inset: 0;
@@ -36,6 +55,11 @@
 .counter {
   display: inline-block;
   animation: counterSpin 75s linear infinite;
+}
+
+/* Cancels the drag rotation the same way .counter cancels the idle one */
+.counterDrag {
+  display: inline-block;
 }
 
 /* The glyph hangs from a pivot just above it and swings like a charm */

@@ -66,6 +66,30 @@ html {
   }
 }
 
+/* Page-to-page crossfade, driven by ViewTransitions. The outgoing frame
+   leaves quickly and the incoming one rises a little, so a navigation reads
+   as one card being replaced by the next rather than a hard cut. */
+@keyframes viewTransitionIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+}
+
+@keyframes viewTransitionOut {
+  to {
+    opacity: 0;
+  }
+}
+
+::view-transition-old(root) {
+  animation: viewTransitionOut 0.18s ease both;
+}
+
+::view-transition-new(root) {
+  animation: viewTransitionIn 0.28s ease both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -76,6 +100,13 @@ html {
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /* The wildcard above does not reach view-transition pseudo-elements */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 
