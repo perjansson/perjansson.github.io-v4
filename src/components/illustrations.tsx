@@ -49,6 +49,33 @@ export const WrenchSketch: React.FC = () => (
   </svg>
 )
 
+export const PenSketch: React.FC = () => (
+  <svg viewBox="0 0 120 90" aria-hidden="true">
+    <g {...strokeProps}>
+      <path d="M92 10 L 104 22 L 46 78 L 28 84 L 33 66 Z" />
+      <path d="M84 18 L 96 30" />
+      <path d="M33 66 L 46 78" />
+      <path d="M38 72 L 41 75" />
+      <path d="M16 22 L 60 22" />
+      <path d="M16 34 L 48 34" />
+      <path d="M16 46 L 36 46" />
+    </g>
+  </svg>
+)
+
+export const CardSketch: React.FC = () => (
+  <svg viewBox="0 0 120 90" aria-hidden="true">
+    <g {...strokeProps}>
+      <path d="M28 8 L 78 8 L 94 24 L 94 82 L 28 82 Z" />
+      <path d="M78 8 L 78 24 L 94 24" />
+      <path d="M40 34 C 40 28, 46 24, 52 24 C 58 24, 64 28, 64 34 C 64 40, 58 44, 52 44 C 46 44, 40 40, 40 34 Z" />
+      <path d="M38 58 C 38 50, 45 47, 52 47 C 59 47, 66 50, 66 58" />
+      <path d="M38 68 L 84 68" />
+      <path d="M38 76 L 72 76" />
+    </g>
+  </svg>
+)
+
 export const MailboxSketch: React.FC = () => (
   <svg viewBox="0 0 120 90" aria-hidden="true">
     <g {...strokeProps}>

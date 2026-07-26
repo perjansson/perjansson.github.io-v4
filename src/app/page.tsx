@@ -8,7 +8,9 @@ import { JsonLd } from '../components/JsonLd'
 import { Logo } from '../components/Logo'
 import {
   BookSketch,
+  CardSketch,
   LaptopSketch,
+  PenSketch,
   WrenchSketch,
   MailboxSketch,
 } from '../components/illustrations'
@@ -18,6 +20,8 @@ const CARDS = [
   { label: 'The Story', href: '/story/', Sketch: BookSketch },
   { label: 'Work', href: '/work/', Sketch: LaptopSketch },
   { label: 'Craft', href: '/craft/', Sketch: WrenchSketch },
+  { label: 'Writing', href: '/writing/', Sketch: PenSketch },
+  { label: 'CV', href: '/cv/', Sketch: CardSketch },
   { label: 'Contact', href: '/contact/', Sketch: MailboxSketch },
 ]
 
@@ -56,7 +60,7 @@ export default async function Home() {
             Full&nbsp;stack.
           </p>
           <p className={styles.byline}>
-            {me.name} — Curious Software Craftsman
+            {me.name} · Curious Software Craftsman
           </p>
         </section>
         <nav className={styles.grid} aria-label="Main">

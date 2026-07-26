@@ -11,13 +11,13 @@ test.describe('front page', () => {
     await expect(page.getByText('Curious.')).toBeVisible()
   })
 
-  test('shows four navigation cards', async ({ page }) => {
+  test('shows a navigation card for every section', async ({ page }) => {
     const nav = page.getByRole('navigation', { name: 'Main' })
-    await expect(nav.getByRole('link')).toHaveCount(4)
-    await expect(nav.getByText('The Story')).toBeVisible()
-    await expect(nav.getByText('Work', { exact: true })).toBeVisible()
-    await expect(nav.getByText('Craft')).toBeVisible()
-    await expect(nav.getByText('Contact')).toBeVisible()
+    const sections = ['The Story', 'Work', 'Craft', 'Writing', 'CV', 'Contact']
+    await expect(nav.getByRole('link')).toHaveCount(sections.length)
+    for (const section of sections) {
+      await expect(nav.getByText(section, { exact: true })).toBeVisible()
+    }
   })
 
   test('work card navigates to the work page', async ({ page }) => {

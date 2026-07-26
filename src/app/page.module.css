@@ -35,10 +35,13 @@
   letter-spacing: 0.14em;
 }
 
+/* Three across, two down. Six cards rather than four, because writing and
+   the CV are worth finding without opening the menu, and three rows would
+   not fit the frame. */
 .grid {
   border-left: var(--border);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr 1fr;
 }
 
@@ -74,12 +77,12 @@
   text-transform: uppercase;
 }
 
-/* Interior 2x2 borders without doubling up against the frame */
-.grid > .card:nth-child(2n) {
+/* Interior borders only: never against the frame's own edge */
+.grid > .card:not(:nth-child(3n + 1)) {
   border-left: var(--border);
 }
 
-.grid > .card:nth-child(n + 3) {
+.grid > .card:nth-child(n + 4) {
   border-top: var(--border);
 }
 
@@ -112,7 +115,7 @@
     grid-template-rows: none;
   }
 
-  .grid > .card:nth-child(2n) {
+  .grid > .card:not(:nth-child(3n + 1)) {
     border-left: none;
   }
 

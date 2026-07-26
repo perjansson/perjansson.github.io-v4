@@ -22,7 +22,10 @@ test.describe('writing page', () => {
   test('is reachable from the burger menu', async ({ page }) => {
     await page.goto('/')
     await page.getByRole('button', { name: 'Open menu' }).click()
-    await page.getByRole('link', { name: 'Writing', exact: true }).click()
+    await page
+      .getByRole('navigation', { name: 'Menu' })
+      .getByRole('link', { name: 'Writing', exact: true })
+      .click()
     await expect(page).toHaveURL(/\/writing\/$/)
   })
 })
