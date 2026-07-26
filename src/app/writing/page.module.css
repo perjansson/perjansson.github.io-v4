@@ -1,0 +1,44 @@
+.heading {
+  composes: sectionTitle from global;
+  margin-bottom: 2.2rem;
+}
+
+.list {
+  list-style: none;
+}
+
+.item + .item {
+  margin-top: 1.7rem;
+}
+
+/* Same two-column row as the work list, but article titles are long enough
+   to wrap: the title keeps its own column and wraps inside it, so the year
+   stays pinned top right instead of being pushed onto a line of its own */
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.name {
+  font-size: 0.98rem;
+  font-weight: 700;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.year {
+  font-weight: 700;
+  flex: none;
+}
+
+.meta {
+  color: var(--color-ink-dim);
+  font-size: 0.85rem;
+}
+
+.item a:hover .name {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}

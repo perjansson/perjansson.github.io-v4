@@ -12,6 +12,7 @@ const MENU_ITEMS = [
   { label: 'Story', href: '/story/' },
   { label: 'Work', href: '/work/' },
   { label: 'Craft', href: '/craft/' },
+  { label: 'Writing', href: '/writing/' },
   { label: 'Contact', href: '/contact/' },
 ]
 
