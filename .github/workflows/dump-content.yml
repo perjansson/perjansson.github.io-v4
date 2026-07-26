@@ -44,6 +44,7 @@ jobs:
               "TECH " + ((.tech // []) | join(", ")),
               "TAGS " + ((.tags // []) | join(", ")),
               "DESC " + ([.description.json | .. | .value? // empty] | join(" ")),
+              "URIS " + ([.description.json, .me.json | .. | .data?.uri? // empty] | join(" | ")),
               "MINE " + ([.me.json | .. | .value? // empty] | join(" ")),
               ""
           ' resp.json
