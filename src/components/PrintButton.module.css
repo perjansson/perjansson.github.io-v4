@@ -1,0 +1,10 @@
+.print {
+  composes: chip from global;
+  border: var(--border);
+}
+
+@media print {
+  .print {
+    display: none;
+  }
+}

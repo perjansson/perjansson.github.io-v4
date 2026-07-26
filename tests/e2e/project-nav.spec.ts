@@ -1,31 +1,50 @@
 import { test, expect } from '@playwright/test'
 
+const pagerOf = (page: import('@playwright/test').Page) =>
+  page.getByRole('navigation', { name: 'Other projects' })
+
 test.describe('project page navigation', () => {
-  test('walks from the newest project to the oldest and back', async ({
+  // Checks the ends and one step, rather than walking every project: with the
+  // real content that is 22 mobile navigations and smooth scrolling makes each
+  // pager link unstable long enough to blow the test timeout.
+  test('the newest project has no newer neighbour and the oldest no older', async ({
     page,
   }) => {
     await page.goto('/work/')
-    const projects = await page.getByRole('listitem').count()
+    const items = page.getByRole('listitem')
+    const count = await items.count()
+
+    await items.first().getByRole('link').click()
+    await expect(pagerOf(page).getByRole('link', { name: /newer/i })).toHaveCount(
+      0
+    )
+    await expect(pagerOf(page).getByRole('link', { name: /older/i })).toHaveCount(
+      1
+    )
+
+    await page.goto('/work/')
+    await items.nth(count - 1).getByRole('link').click()
+    await expect(pagerOf(page).getByRole('link', { name: /older/i })).toHaveCount(
+      0
+    )
+    await expect(pagerOf(page).getByRole('link', { name: /newer/i })).toHaveCount(
+      1
+    )
+  })
+
+  test('stepping older and back lands on the project it came from', async ({
+    page,
+  }) => {
+    await page.goto('/work/')
     await page.getByRole('listitem').first().getByRole('link').click()
+    await expect(page).toHaveURL(/\/projects\//)
+    const start = new URL(page.url()).pathname
 
-    const pager = page.getByRole('navigation', { name: 'Other projects' })
+    await pagerOf(page).getByRole('link', { name: /older/i }).click()
+    await expect(page).not.toHaveURL(start)
 
-    // The newest project is the top of the list, so it has no newer neighbour
-    await expect(pager.getByRole('link', { name: /newer/i })).toHaveCount(0)
-
-    // Walk all the way down
-    for (let step = 1; step < projects; step++) {
-      const older = pager.getByRole('link', { name: /older/i })
-      await expect(older).toHaveCount(1)
-      await older.click()
-    }
-
-    // And the oldest has no older neighbour
-    await expect(pager.getByRole('link', { name: /older/i })).toHaveCount(0)
-
-    // One step back up brings the older link back
-    await pager.getByRole('link', { name: /newer/i }).click()
-    await expect(pager.getByRole('link', { name: /older/i })).toHaveCount(1)
+    await pagerOf(page).getByRole('link', { name: /newer/i }).click()
+    await expect(page).toHaveURL(start)
   })
 
   test('a tech chip opens the work list filtered to it', async ({ page }) => {

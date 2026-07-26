@@ -41,6 +41,31 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Paper is white whichever theme the reader had on screen, and the cream
+   would otherwise be laid down as a full-bleed ink wash */
+@media print {
+  :root,
+  :root[data-theme='dark'] {
+    --color-bg: #fff;
+    --color-panel: #fff;
+    --color-ink: #000;
+    --color-ink-dim: #333;
+    --border: 1.5pt solid #000;
+    color-scheme: light;
+  }
+
+  /* One lever for the whole document: everything is sized in rem, so
+     dropping the root brings a screen layout down to paper proportions
+     (0.95rem body lands at about 9.5pt) */
+  html {
+    font-size: 13px;
+  }
+
+  body {
+    line-height: 1.5;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

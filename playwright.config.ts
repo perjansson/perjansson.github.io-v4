@@ -13,6 +13,10 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4173',
     trace: 'on-first-retry',
+    // The site scrolls smoothly and animates list changes, which keeps
+    // elements "not stable" long enough to time out a click on a slow CI
+    // runner. Nothing under test depends on the motion.
+    contextOptions: { reducedMotion: 'reduce' },
     launchOptions: executablePath
       ? { executablePath, args: ['--no-sandbox'] }
       : undefined,

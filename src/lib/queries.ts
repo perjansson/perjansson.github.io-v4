@@ -20,9 +20,11 @@ export const getIndexPageDataQuery = `{
             sys {
                 id
             }
+            title
             titleShort
             client
             role
+            city
             tech
             startdate
             enddate

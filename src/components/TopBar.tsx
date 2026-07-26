@@ -13,6 +13,7 @@ const MENU_ITEMS = [
   { label: 'Work', href: '/work/' },
   { label: 'Craft', href: '/craft/' },
   { label: 'Writing', href: '/writing/' },
+  { label: 'CV', href: '/cv/' },
   { label: 'Contact', href: '/contact/' },
 ]
 

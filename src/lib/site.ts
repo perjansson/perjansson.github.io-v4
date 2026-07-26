@@ -14,5 +14,6 @@ export const SITE_PAGES = [
   '/work/',
   '/craft/',
   '/writing/',
+  '/cv/',
   '/contact/',
 ] as const
