@@ -6,7 +6,7 @@ import { visibleContacts } from '../../lib/contactLine'
 import { formatPeriodDetailed } from '../../lib/projectHelper'
 import { SITE_URL } from '../../lib/site'
 import { TECH_KINDS, buildTechStats, canonicalTech } from '../../lib/workData'
-import { ARTICLES, articleUrl, articleYear } from '../../lib/writingData'
+import { ARTICLES, articleUrl } from '../../lib/writingData'
 import { PrintButton } from '../../components/PrintButton'
 import { RichText } from '../../components/RichText'
 import styles from './page.module.css'
@@ -114,11 +114,6 @@ export default async function CvPage() {
             {ARTICLES.map((article) => (
               <li key={article.slug} className={styles.article}>
                 <a href={articleUrl(article)}>{article.title}</a>
-                {articleYear(article) && (
-                  <span className={styles.articleYear}>
-                    {articleYear(article)}
-                  </span>
-                )}
               </li>
             ))}
           </ul>

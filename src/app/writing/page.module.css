@@ -11,26 +11,13 @@
   margin-top: 1.7rem;
 }
 
-/* Same two-column row as the work list, but article titles are long enough
-   to wrap: the title keeps its own column and wraps inside it, so the year
-   stays pinned top right instead of being pushed onto a line of its own */
-.row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-
+/* Unlike the work list there is no second column: article titles run long
+   and a year beside them added nothing but a squeeze */
 .name {
+  display: block;
   font-size: 0.98rem;
   font-weight: 700;
-  min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.year {
-  font-weight: 700;
-  flex: none;
 }
 
 .meta {

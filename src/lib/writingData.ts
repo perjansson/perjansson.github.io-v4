@@ -2,7 +2,11 @@ export interface Article {
   title: string
   /** Slug under https://medium.com/@perjansson/ */
   slug: string
-  /** Publication date, ISO. Absent when Medium does not show one. */
+  /**
+   * Publication date, ISO. Absent when Medium does not show one. Not
+   * rendered anywhere: it orders this list and feeds datePublished in the
+   * page's structured data.
+   */
   date?: string
   /** What the piece is about, taken from its own title */
   topic: string
@@ -75,9 +79,9 @@ export const ARTICLES: Article[] = [
     topic: 'Offshoring',
   },
   {
-    // Linked from the Nordea Portfolio for Advisors project. Its date is
-    // not recorded here because it was not on the profile page the rest of
-    // this list came from, and a guessed date would sort the list wrong.
+    // Linked from the Nordea Portfolio for Advisors project. It was not on
+    // the profile page the rest of this list came from, so it has no
+    // recorded date and sorts last rather than being given a guessed one.
     title: 'How we invented and introduced drama driven demo',
     slug: 'how-we-invented-and-introduced-drama-driven-demo-9cc564bc741f',
     topic: 'Demos',
@@ -85,6 +89,3 @@ export const ARTICLES: Article[] = [
 ]
 
 export const articleUrl = ({ slug }: Article) => `${MEDIUM_PROFILE}/${slug}`
-
-export const articleYear = ({ date }: Article) =>
-  date ? date.slice(0, 4) : undefined

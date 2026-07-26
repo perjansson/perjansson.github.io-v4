@@ -3,12 +3,7 @@ import type { Metadata } from 'next'
 import { getIndexPageData } from '../../lib/api'
 import { buildContactEmail } from '../../lib/contactLine'
 import { SITE_URL } from '../../lib/site'
-import {
-  ARTICLES,
-  MEDIUM_PROFILE,
-  articleUrl,
-  articleYear,
-} from '../../lib/writingData'
+import { ARTICLES, MEDIUM_PROFILE, articleUrl } from '../../lib/writingData'
 import { Frame } from '../../components/Frame'
 import { JsonLd } from '../../components/JsonLd'
 import { SplitPanel } from '../../components/SplitPanel'
@@ -60,12 +55,7 @@ export default async function WritingPage() {
           {ARTICLES.map((article) => (
             <li key={article.slug} className={styles.item}>
               <a href={articleUrl(article)} target="_blank" rel="noreferrer">
-                <span className={styles.row}>
-                  <span className={styles.name}>{article.title}</span>
-                  {/* The one piece Medium's profile page does not date is
-                      listed without a year rather than with a guessed one */}
-                  <span className={styles.year}>{articleYear(article)}</span>
-                </span>
+                <span className={styles.name}>{article.title}</span>
                 <span className={styles.meta}>{article.topic} · Medium ↗</span>
               </a>
             </li>
