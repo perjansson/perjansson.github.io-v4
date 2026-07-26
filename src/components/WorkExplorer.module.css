@@ -62,10 +62,15 @@
   color: var(--color-ink-dim);
 }
 
+/* The chip cloud eats too much screen on a phone, but the headline numbers
+   still say something worth saying, so only the box goes */
 @media (max-width: 860px) {
-  .filters,
-  .matchCount {
+  .filters {
     display: none;
+  }
+
+  .matchCount {
+    margin-top: 1.2rem;
   }
 }
 

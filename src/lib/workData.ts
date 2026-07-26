@@ -251,6 +251,33 @@ export const buildWorkItems = (projects: ProjectType[]): WorkItem[] =>
     promoted: isPromoted(project),
   }))
 
+export interface WorkSummary {
+  projects: number
+  years: number
+  clients: number
+}
+
+/** The headline numbers under the work page's filter box */
+export const buildWorkSummary = (
+  projects: ProjectType[],
+  now: Date = new Date()
+): WorkSummary => {
+  const starts = projects.map(({ startdate }) => new Date(startdate).getTime())
+  const ends = projects.map(({ enddate }) =>
+    enddate ? new Date(enddate).getTime() : now.getTime()
+  )
+
+  return {
+    projects: projects.length,
+    // Span from the first project to the most recent work, not the sum of
+    // the engagements: several of them overlap
+    years: starts.length
+      ? Math.round((Math.max(...ends) - Math.min(...starts)) / MS_PER_YEAR)
+      : 0,
+    clients: new Set(projects.map(({ client }) => client)).size,
+  }
+}
+
 // A tech's weight answers "how much does this say about Per today?",
 // which is three things multiplied together:
 //

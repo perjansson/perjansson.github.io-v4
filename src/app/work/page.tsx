@@ -3,7 +3,11 @@ import type { Metadata } from 'next'
 import { getIndexPageData } from '../../lib/api'
 import { buildContactEmail } from '../../lib/contactLine'
 import { SITE_URL } from '../../lib/site'
-import { buildTechStats, buildWorkItems } from '../../lib/workData'
+import {
+  buildTechStats,
+  buildWorkItems,
+  buildWorkSummary,
+} from '../../lib/workData'
 import { Frame } from '../../components/Frame'
 import { JsonLd } from '../../components/JsonLd'
 import { WorkExplorer } from '../../components/WorkExplorer'
@@ -38,6 +42,7 @@ export default async function WorkPage() {
       <WorkExplorer
         items={buildWorkItems(projects.items)}
         techStats={buildTechStats(projects.items)}
+        summary={buildWorkSummary(projects.items)}
       />
     </Frame>
   )

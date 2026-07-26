@@ -42,10 +42,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        {/* Inline and before paint, so the page never flashes the wrong
+            theme. A stored choice always wins; without one, the reader's own
+            system setting decides rather than defaulting everyone to light. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.dataset.theme='dark'}}catch(e){}",
+              "try{var t=localStorage.getItem('theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}if(t==='dark'){document.documentElement.dataset.theme='dark'}}catch(e){}",
           }}
         />
         {children}

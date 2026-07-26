@@ -7,15 +7,18 @@ import {
   TECH_KINDS,
   TechStat,
   WorkItem,
+  WorkSummary,
   parseTechFilter,
   techFilterHref,
 } from '../lib/workData'
+import { trackEvent } from '../lib/analytics'
 import { SplitPanel } from './SplitPanel'
 import styles from './WorkExplorer.module.css'
 
 interface WorkExplorerProps {
   items: WorkItem[]
   techStats: TechStat[]
+  summary: WorkSummary
 }
 
 const ProjectList: React.FC<{ items: WorkItem[] }> = ({ items }) => (
@@ -39,6 +42,7 @@ const ProjectList: React.FC<{ items: WorkItem[] }> = ({ items }) => (
 export const WorkExplorer: React.FC<WorkExplorerProps> = ({
   items,
   techStats,
+  summary,
 }) => {
   const [activeTechs, setActiveTechs] = useState<string[]>([])
 
@@ -66,12 +70,17 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
     window.history.pushState(null, '', techFilterHref(next))
   }, [])
 
-  const toggleTech = (tech: string) =>
+  const toggleTech = (tech: string) => {
+    const pressed = !activeTechs.includes(tech)
+    // Which techs people actually filter by is the one thing this page can
+    // tell Per that the content itself cannot
+    trackEvent('work_filter_tech', { tech, pressed })
     applyTechs(
-      activeTechs.includes(tech)
-        ? activeTechs.filter((t) => t !== tech)
-        : [...activeTechs, tech]
+      pressed
+        ? [...activeTechs, tech]
+        : activeTechs.filter((t) => t !== tech)
     )
+  }
 
   // Selected techs narrow the list (project must use all of them)
   const visible = items.filter((item) =>
@@ -152,8 +161,8 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
               themselves only announce their own pressed state */}
           <p className={styles.matchCount} aria-live="polite">
             {activeTechs.length > 0
-              ? `${visible.length} of ${items.length} projects`
-              : `${items.length} projects`}
+              ? `${visible.length} of ${summary.projects} projects`
+              : `${summary.projects} projects · ${summary.years} years · ${summary.clients} clients`}
           </p>
         </>
       }
