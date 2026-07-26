@@ -1,8 +1,10 @@
 import Link from 'next/link'
 
 import { getIndexPageData } from '../lib/api'
-import { buildContactEmail } from '../lib/contactLine'
+import { buildContactEmail, profileUrls } from '../lib/contactLine'
+import { SITE_DESCRIPTION, SITE_URL } from '../lib/site'
 import { Frame } from '../components/Frame'
+import { JsonLd } from '../components/JsonLd'
 import { Logo } from '../components/Logo'
 import {
   BookSketch,
@@ -25,6 +27,24 @@ export default async function Home() {
 
   return (
     <Frame contactEmail={buildContactEmail(me)}>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Person',
+          name: me.name,
+          givenName: me.firstName,
+          familyName: me.lastName,
+          jobTitle: 'Curious Software Craftsman',
+          description: SITE_DESCRIPTION,
+          url: SITE_URL,
+          sameAs: profileUrls(me),
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Turku',
+            addressCountry: 'FI',
+          },
+        }}
+      />
       <div className={styles.home}>
         <section className={styles.intro}>
           <Logo />

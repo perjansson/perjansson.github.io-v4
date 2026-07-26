@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { getIndexPageData } from '../../lib/api'
-import { buildContactEmail } from '../../lib/contactLine'
+import { buildContactEmail, visibleContacts } from '../../lib/contactLine'
 import { Frame } from '../../components/Frame'
 import { SplitPanel } from '../../components/SplitPanel'
 import styles from './page.module.css'
@@ -16,18 +16,6 @@ const prettyUrl = (url: string) =>
     .replace(/^https?:\/\/(www\.)?/, '')
     .replace(/\/$/, '')
 
-const HIDDEN_CHANNELS = ['stackoverflow', 'twitter', 'facebook']
-
-// Matches "Stack Overflow", "stack-overflow", twitter.com/x.com urls etc.
-const isHiddenChannel = ({ medium, url }: { medium: string; url: string }) => {
-  const normalizedMedium = medium.toLowerCase().replace(/[^a-z0-9]/g, '')
-  const normalizedUrl = url.toLowerCase()
-  return HIDDEN_CHANNELS.some(
-    (hidden) =>
-      normalizedMedium.includes(hidden) || normalizedUrl.includes(hidden)
-  )
-}
-
 export default async function ContactPage() {
   const { data } = await getIndexPageData()
   const { me } = data
@@ -37,10 +25,7 @@ export default async function ContactPage() {
       <SplitPanel title="Contact">
         <h2 className={styles.heading}>Find me here</h2>
         <ul className={styles.list}>
-          {me.contacts.items
-            .filter(Boolean)
-            .filter((contact) => !isHiddenChannel(contact))
-            .map(({ medium, url }) => (
+          {visibleContacts(me).map(({ medium, url }) => (
             <li key={medium}>
               <a
                 href={url}

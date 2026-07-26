@@ -3,25 +3,23 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import '@fontsource/space-mono/400.css'
 import '@fontsource/space-mono/700.css'
 import './globals.css'
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '../lib/site'
 
 const gaId = process.env.NEXT_PUBLIC_GA_TRACKING_ID
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.perjansson.me'),
-  title: 'Per Jansson - Curious Software Craftsman',
-  description:
-    "I'm Per, a curious software developer with a passion to build great applications and websites - and help others do the same.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   openGraph: {
-    title: 'Per Jansson - Curious Software Craftsman',
-    description:
-      "I'm Per, a curious software developer with a passion to build great applications and websites - and help others do the same.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: ['/images/social-media.jpg'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Per Jansson - Curious Software Craftsman',
-    description:
-      "I'm Per, a curious software developer with a passion to build great applications and websites - and help others do the same.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
   icons: {
     icon: [
