@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 
 import { TechStat, WorkItem } from '../lib/workData'
@@ -11,6 +11,28 @@ interface WorkExplorerProps {
   items: WorkItem[]
   techStats: TechStat[]
 }
+
+const TECH_PARAM = 'tech'
+
+// Comma separated, so a shared link reads /work/?tech=Kotlin,Jetpack%20Compose
+// instead of a wall of repeated keys. No tech name contains a comma.
+// Unknown names are dropped rather than trusted, otherwise a stale or
+// hand-edited link lands on an empty list with no chip left to press.
+const parseTechParam = (search: string, known: Set<string>) => {
+  const raw = new URLSearchParams(search).get(TECH_PARAM)
+  if (!raw) {
+    return []
+  }
+  return raw
+    .split(',')
+    .map((name) => name.trim())
+    .filter((name) => known.has(name))
+}
+
+const techSearch = (techs: string[]) =>
+  techs.length
+    ? `?${TECH_PARAM}=${techs.map(encodeURIComponent).join(',')}`
+    : ''
 
 const ProjectList: React.FC<{ items: WorkItem[] }> = ({ items }) => (
   <ul className={styles.list}>
@@ -36,11 +58,39 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
 }) => {
   const [activeTechs, setActiveTechs] = useState<string[]>([])
 
+  const knownTechs = useMemo(
+    () => new Set(techStats.map(({ name }) => name)),
+    [techStats]
+  )
+
+  // The filter lives in the URL, so a narrowed view can be bookmarked or
+  // shared and the back button steps back through it. State stays the
+  // source of truth for rendering: the page prerenders unfiltered, which
+  // keeps the whole project list in the static HTML for crawlers, and the
+  // URL is read once on mount and on every popstate.
+  useEffect(() => {
+    const sync = () =>
+      setActiveTechs(parseTechParam(window.location.search, knownTechs))
+
+    sync()
+    window.addEventListener('popstate', sync)
+    return () => window.removeEventListener('popstate', sync)
+  }, [knownTechs])
+
+  const applyTechs = useCallback((next: string[]) => {
+    setActiveTechs(next)
+    window.history.pushState(
+      null,
+      '',
+      `${window.location.pathname}${techSearch(next)}`
+    )
+  }, [])
+
   const toggleTech = (tech: string) =>
-    setActiveTechs((current) =>
-      current.includes(tech)
-        ? current.filter((t) => t !== tech)
-        : [...current, tech]
+    applyTechs(
+      activeTechs.includes(tech)
+        ? activeTechs.filter((t) => t !== tech)
+        : [...activeTechs, tech]
     )
 
   // Selected techs narrow the list (project must use all of them)
@@ -71,7 +121,7 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
             <button
               type="button"
               className={`chip ${styles.clearChip}`}
-              onClick={() => setActiveTechs([])}
+              onClick={() => applyTechs([])}
             >
               × Clear
             </button>
