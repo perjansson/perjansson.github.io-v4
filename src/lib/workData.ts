@@ -1,4 +1,4 @@
-import { ProjectType } from '../types'
+import type { ProjectType } from '../types'
 import { formatPeriod } from './projectHelper'
 
 export interface WorkItem {
@@ -22,59 +22,109 @@ export interface TechStat {
 // Same tech, different spellings in the content
 const TECH_ALIASES: Record<string, string> = {
   'Material-UI': 'Material UI',
+  // Guard against the casing that used to live in the content, so a
+  // stray old spelling still scores instead of silently falling to the
+  // default popularity
+  Typescript: 'TypeScript',
+  Javascript: 'JavaScript',
 }
 
 export const canonicalTech = (name: string) => TECH_ALIASES[name] ?? name
 
-// How relevant each tech feels in 2026, 0 (a thing of the past) to 1
-// (current and trendy). Editorial judgment — tune freely. Unlisted
-// techs default to 0.5.
+// How current each tech is today, 0 (retired) to 1 (what people reach
+// for now). This is the "would a reader recognise this as current?"
+// axis — not how much Per liked it. Editorial judgment, tune freely.
+//
+// HTML and CSS are deliberately held at 0.5 rather than the ~0.8 their
+// evergreen status would earn: they appear in almost every project, so
+// at face value they crowd out the techs that actually say something
+// about the work.
 const TECH_POPULARITY: Record<string, number> = {
+  // Current and in demand
+  'Claude Code': 0.95,
+  TypeScript: 0.95,
   React: 0.95,
-  Typescript: 0.95,
-  'Next.js': 0.9,
   Kotlin: 0.9,
   'Jetpack Compose': 0.9,
+  'Next.js': 0.9,
+  Docker: 0.9,
   Figma: 0.9,
+  AWS: 0.88,
+  Android: 0.85,
   'GitHub Actions': 0.85,
-  AWS: 0.85,
-  Android: 0.8,
-  Node: 0.8,
-  Docker: 0.8,
-  'React Native': 0.75,
-  Expo: 0.75,
-  'Spring Boot': 0.7,
-  Javascript: 0.7,
-  'Framer Motion': 0.7,
-  Java: 0.65,
-  GraphQL: 0.6,
-  MongoDB: 0.6,
+  Node: 0.85,
+  PostgreSQL: 0.85,
+  GCP: 0.8,
+  Jest: 0.8,
+  JavaScript: 0.8,
+  'React Native': 0.8,
+  Expo: 0.8,
+  'Spring Boot': 0.8,
+  Java: 0.7,
+  gRPC: 0.7,
+  GraphQL: 0.65,
+  Storybook: 0.65,
+  'Framer Motion': 0.6,
+  Cypress: 0.6,
   'D3.js': 0.6,
-  Storybook: 0.6,
-  Cypress: 0.55,
+  'three.js': 0.6,
+  MongoDB: 0.6,
+  RabbitMQ: 0.6,
+  'Material UI': 0.6,
+  Bazel: 0.6,
+  Spring: 0.6,
   Express: 0.55,
+
+  // Still around, no longer exciting
+  Angular: 0.5,
+  Hibernate: 0.5,
+  Maven: 0.5,
   SonarQube: 0.5,
-  'Material UI': 0.5,
-  Spring: 0.5,
+  'SQL Server': 0.5,
+  PWA: 0.5,
   HTML: 0.5,
-  'SQL Server': 0.45,
+  CSS: 0.5,
+  Jenkins: 0.45,
+  SASS: 0.45,
   Redux: 0.45,
-  Angular: 0.4,
-  SASS: 0.4,
+  // Current, but they say more about process than craft — held down so
+  // they don't outrank engineering tools on a long-running project
+  Jira: 0.4,
+  Miro: 0.4,
+  Cucumber: 0.4,
   Puppeteer: 0.4,
   'Styled Components': 0.35,
-  Hibernate: 0.35,
-  Heroku: 0.3,
-  Camel: 0.3,
-  'Redux Saga': 0.25,
-  Thymeleaf: 0.2,
+  Camel: 0.35,
+  Koa: 0.35,
+  Eclipse: 0.3,
+  'Java EE': 0.3,
+  Heroku: 0.25,
+  Thymeleaf: 0.25,
+  'Standard JS': 0.25,
+  'Redux Saga': 0.2,
+
+  // Historic
+  JSF: 0.15,
   Zeplin: 0.15,
   Lerna: 0.15,
   jQuery: 0.1,
-  'Google Web Toolkit': 0.05,
+  EJB3: 0.1,
+  Materialize: 0.1,
+  MyFaces: 0.08,
+  Struts: 0.05,
+  Sculptor: 0.05,
+  RichFaces: 0.03,
+  Seam: 0.03,
+  'Google Web Toolkit': 0.03,
+  Shale: 0.02,
+  Hudson: 0.02,
+  'Apache Continuum': 0.02,
+  ADT: 0.02,
 }
 
 const popularityOf = (name: string) => TECH_POPULARITY[name] ?? 0.5
+
+const MS_PER_YEAR = 365.25 * 24 * 60 * 60 * 1000
 
 const monthsBetween = (start: string, end: string | null | undefined) => {
   const startDate = new Date(start)
@@ -85,6 +135,9 @@ const monthsBetween = (start: string, end: string | null | undefined) => {
       (endDate.getMonth() - startDate.getMonth())
   )
 }
+
+const yearsSince = (end: string | null | undefined, now: Date) =>
+  end ? Math.max(0, (now.getTime() - new Date(end).getTime()) / MS_PER_YEAR) : 0
 
 // The `promoted` Boolean on the project content type drives the
 // "Highlights" section
@@ -101,14 +154,32 @@ export const buildWorkItems = (projects: ProjectType[]): WorkItem[] =>
     promoted: isPromoted(project),
   }))
 
-// Weight = personal usage (months + a bonus per project, counted 1.5x
-// for featured projects) times a present-day popularity factor, so
-// long-and-recent techs proven in the showcase work read big while
-// techs of the past shrink no matter how long they were used.
-// Scaled against the heaviest tech for sizing.
+// A tech's weight answers "how much does this say about Per today?",
+// which is three things multiplied together:
+//
+//   1. how long he used it        — months, plus a bonus per project so
+//                                   breadth counts alongside depth
+//   2. how recently                — halves every RECENCY_HALF_LIFE_YEARS
+//                                   since the project ended; still-running
+//                                   work counts in full
+//   3. how current the tech is     — the popularity table above
+//
+// Without (2) a decade of mid-2000s Java outweighed four current years
+// of Kotlin, which is the opposite of what a reader needs to know.
 const FEATURED_USAGE_MULTIPLIER = 1.5
+const PROJECT_BONUS_MONTHS = 6
+const RECENCY_HALF_LIFE_YEARS = 5
+// Popularity scales the weight rather than gating it, so a long stint
+// in something unfashionable never disappears entirely
+const POPULARITY_FLOOR = 0.3
+// Raw scores are dominated by a handful of techs; the square root lifts
+// the middle of the pack back into legible sizes without reordering
+const scaleCurve = (ratio: number) => Math.sqrt(ratio)
 
-export const buildTechStats = (projects: ProjectType[]): TechStat[] => {
+export const buildTechStats = (
+  projects: ProjectType[],
+  now: Date = new Date()
+): TechStat[] => {
   const stats = new Map<
     string,
     { projectCount: number; months: number; usage: number }
@@ -116,13 +187,16 @@ export const buildTechStats = (projects: ProjectType[]): TechStat[] => {
 
   for (const project of projects) {
     const months = monthsBetween(project.startdate, project.enddate)
-    const multiplier = isPromoted(project) ? FEATURED_USAGE_MULTIPLIER : 1
+    const featured = isPromoted(project) ? FEATURED_USAGE_MULTIPLIER : 1
+    const recency =
+      0.5 ** (yearsSince(project.enddate, now) / RECENCY_HALF_LIFE_YEARS)
+
     for (const rawTech of project.tech ?? []) {
       const tech = canonicalTech(rawTech)
       const entry = stats.get(tech) ?? { projectCount: 0, months: 0, usage: 0 }
       entry.projectCount += 1
       entry.months += months
-      entry.usage += (months + 6) * multiplier
+      entry.usage += (months + PROJECT_BONUS_MONTHS) * featured * recency
       stats.set(tech, entry)
     }
   }
@@ -131,7 +205,9 @@ export const buildTechStats = (projects: ProjectType[]): TechStat[] => {
     name,
     projectCount: entry.projectCount,
     months: entry.months,
-    score: entry.usage * (0.3 + 0.7 * popularityOf(name)),
+    score:
+      entry.usage *
+      (POPULARITY_FLOOR + (1 - POPULARITY_FLOOR) * popularityOf(name)),
   }))
 
   const maxScore = Math.max(...scored.map(({ score }) => score), 1)
@@ -142,6 +218,6 @@ export const buildTechStats = (projects: ProjectType[]): TechStat[] => {
       name,
       projectCount,
       months,
-      scale: score / maxScore,
+      scale: scaleCurve(score / maxScore),
     }))
 }
