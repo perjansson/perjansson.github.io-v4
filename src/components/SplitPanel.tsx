@@ -1,4 +1,5 @@
 import { Logo } from './Logo'
+import { ScrollPastLogo } from './ScrollPastLogo'
 import styles from './SplitPanel.module.css'
 
 interface SplitPanelProps {
@@ -33,6 +34,7 @@ export const SplitPanel: React.FC<SplitPanelProps> = ({
           <Logo />
           <h1 className={styles.pageTitle}>{title}</h1>
           {chips && <div className={styles.chips}>{chips}</div>}
+          <ScrollPastLogo />
         </>
       )}
     </section>
