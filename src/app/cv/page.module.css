@@ -20,6 +20,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   padding: 0.1em 0.35em;
+  overflow-wrap: anywhere;
 }
 
 .back:hover {
@@ -60,6 +61,9 @@
   margin-top: 1rem;
   font-size: 0.85rem;
   color: var(--color-ink-dim);
+  /* A profile URL has no spaces to break at, and at high zoom the line is
+     wider than the viewport on its own */
+  overflow-wrap: anywhere;
 }
 
 .channels a:hover {
@@ -126,6 +130,9 @@
 .entryTitle {
   font-size: 0.98rem;
   min-width: 0;
+  /* Client names are single unbreakable words; only `anywhere` shrinks a
+     flex item's min-content width */
+  overflow-wrap: anywhere;
 }
 
 .entryClient::before {
@@ -192,6 +199,14 @@
 
   .skillLabel {
     width: auto;
+  }
+
+  /* "Feb 2022 – Jun 2022 · Stockholm" will not shrink, so past this width
+     it goes under the project name rather than out through the edge */
+  .entryHead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
   }
 }
 

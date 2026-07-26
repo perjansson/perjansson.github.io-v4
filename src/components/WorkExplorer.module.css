@@ -120,6 +120,10 @@
 .name {
   font-size: 0.98rem;
   font-weight: 700;
+  /* Only `anywhere` reduces a flex item's min-content width, and at extreme
+     zoom a single project word is wider than the panel */
+  overflow-wrap: anywhere;
+  min-width: 0;
 }
 
 .year {
