@@ -103,13 +103,13 @@ export const WorkExplorer: React.FC<WorkExplorerProps> = ({
       <div key={visible.map((item) => item.id).join('|')} className={styles.lists}>
         {selected.length > 0 && (
           <section className={styles.section}>
-            <h2 className={styles.heading}>Selected work</h2>
+            <h2 className={styles.heading}>Highlights</h2>
             <ProjectList items={selected} />
           </section>
         )}
         {rest.length > 0 && (
           <section className={styles.section}>
-            <h2 className={styles.heading}>All work</h2>
+            <h2 className={styles.heading}>Everything</h2>
             <ProjectList items={rest} />
           </section>
         )}

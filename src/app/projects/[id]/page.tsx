@@ -89,7 +89,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               ))}
             </ul>
             <Link href="/work/" className="chip">
-              ← All work
+              ← Everything
             </Link>
           </div>
         }

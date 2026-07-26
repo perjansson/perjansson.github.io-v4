@@ -87,7 +87,7 @@ const monthsBetween = (start: string, end: string | null | undefined) => {
 }
 
 // The `promoted` Boolean on the project content type drives the
-// "Selected work" section
+// "Highlights" section
 const isPromoted = (project: ProjectType) => project.promoted === true
 
 export const buildWorkItems = (projects: ProjectType[]): WorkItem[] =>

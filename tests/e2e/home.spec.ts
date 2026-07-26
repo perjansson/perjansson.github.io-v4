@@ -62,13 +62,13 @@ test.describe('story page', () => {
 })
 
 test.describe('work page', () => {
-  test('shows selected work and all work sections', async ({ page }) => {
+  test('shows highlights and everything sections', async ({ page }) => {
     await page.goto('/work/')
     await expect(
-      page.getByRole('heading', { name: /selected work/i })
+      page.getByRole('heading', { name: /highlights/i })
     ).toBeVisible()
     await expect(
-      page.getByRole('heading', { name: /all work/i })
+      page.getByRole('heading', { name: /everything/i })
     ).toBeVisible()
     expect(await page.getByRole('listitem').count()).toBeGreaterThan(0)
   })
@@ -124,7 +124,7 @@ test.describe('work page', () => {
       page.getByRole('heading', { name: /my part in it/i })
     ).toBeVisible()
 
-    await page.getByRole('link', { name: /all work/i }).click()
+    await page.getByRole('link', { name: /everything/i }).click()
     await expect(page).toHaveURL(/\/work\/$/)
   })
 })
