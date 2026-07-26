@@ -11,8 +11,13 @@ interface FrameProps {
 // with the language-switcher-style strip below — the E.Ekblom chrome.
 export const Frame: React.FC<FrameProps> = ({ children, contactEmail }) => (
   <div className={styles.page}>
+    <a href="#content" className={styles.skipLink}>
+      Skip to content
+    </a>
     <TopBar />
-    <main className={styles.frame}>{children}</main>
+    <main id="content" className={styles.frame} tabIndex={-1}>
+      {children}
+    </main>
     <footer className={styles.strip}>
       <div className={styles.copyright}>
         <span className={styles.copyrightSign} aria-hidden="true">

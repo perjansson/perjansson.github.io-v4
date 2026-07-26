@@ -3,7 +3,10 @@
   --color-bg: #ece7dd;
   --color-panel: #fbf9f4;
   --color-ink: #191919;
-  --color-ink-dim: #6d675c;
+  /* Nudged two steps darker than it looks: on the cream --color-bg the
+     old #6d675c measured 4.55:1, which clears WCAG AA by 0.05. This sits
+     at 5.14:1 on bg and 6.01:1 on panel, with headroom to spare */
+  --color-ink-dim: #655f54;
   --border: 2px solid var(--color-ink);
 
   --font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas,

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -27,6 +27,60 @@ const SOCIAL_ICONS = [
 export const TopBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
+  const panelRef = useRef<HTMLElement>(null)
+  const burgerRef = useRef<HTMLButtonElement>(null)
+  const wasOpen = useRef(false)
+
+  const close = useCallback(() => setIsOpen(false), [])
+
+  // While the menu is open it owns the keyboard: Escape closes it, and Tab
+  // cycles inside the panel so focus can't wander onto the page behind it.
+  useEffect(() => {
+    if (!isOpen) {
+      return
+    }
+
+    const panel = panelRef.current
+    panel?.querySelector<HTMLElement>('button')?.focus()
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        close()
+        return
+      }
+      if (event.key !== 'Tab' || !panel) {
+        return
+      }
+
+      const stops = panel.querySelectorAll<HTMLElement>('a[href], button')
+      const first = stops[0]
+      const last = stops[stops.length - 1]
+      if (!first) {
+        return
+      }
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [isOpen, close])
+
+  // Hand focus back to the burger on close, so the tab order resumes where
+  // the user left it instead of restarting at the top of the document
+  useEffect(() => {
+    if (wasOpen.current && !isOpen) {
+      burgerRef.current?.focus()
+    }
+    wasOpen.current = isOpen
+  }, [isOpen])
 
   return (
     <>
@@ -50,11 +104,13 @@ export const TopBar: React.FC = () => {
         <div className={styles.actions}>
           <ThemeToggle />
           <button
+            ref={burgerRef}
             type="button"
             className={styles.burger}
             onClick={() => setIsOpen(true)}
             aria-label="Open menu"
             aria-expanded={isOpen}
+            aria-controls="main-menu"
           >
             <span />
             <span />
@@ -65,16 +121,23 @@ export const TopBar: React.FC = () => {
 
       <div
         className={`${styles.overlay} ${isOpen ? styles.overlayOpen : ''}`}
-        onClick={() => setIsOpen(false)}
+        onClick={close}
+        aria-hidden="true"
       />
+      {/* `inert` takes the closed panel out of both the tab order and the
+          accessibility tree in one go, which aria-hidden alone can't do
+          without leaving focusable links inside a hidden subtree */}
       <nav
+        ref={panelRef}
+        id="main-menu"
         className={`${styles.panel} ${isOpen ? styles.panelOpen : ''}`}
-        aria-hidden={!isOpen}
+        aria-label="Menu"
+        inert={!isOpen}
       >
         <button
           type="button"
           className={styles.close}
-          onClick={() => setIsOpen(false)}
+          onClick={close}
           aria-label="Close menu"
         >
           ×
@@ -86,8 +149,7 @@ export const TopBar: React.FC = () => {
             className={`${styles.menuLink} ${
               pathname === href ? styles.menuLinkActive : ''
             }`}
-            onClick={() => setIsOpen(false)}
-            tabIndex={isOpen ? 0 : -1}
+            onClick={close}
           >
             {label}
           </Link>
